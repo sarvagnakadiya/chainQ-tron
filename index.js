@@ -366,6 +366,89 @@ app.get("/getUserChatIds/:userAddress", (req, res) => {
   );
 });
 
+// Get all prompts and responses for a specific chat (protected route)
+app.get("/getChatPromptsAndResponses/:chatId", (req, res) => {
+  const { chatId } = req.params;
+  const authenticatedUserAddress = req.user.userAddress; // Extract user information from the JWT token
+
+  // Check if the chat belongs to the authenticated user
+  db.get(
+    "SELECT userAddress FROM chats WHERE chatId = ?",
+    [chatId],
+    (err, row) => {
+      if (err) {
+        res.status(500).json({ message: "Error checking chat ownership" });
+      } else if (!row) {
+        res.status(404).json({ message: "Chat not found" });
+      } else if (row.userAddress !== authenticatedUserAddress) {
+        res
+          .status(401)
+          .json({ message: "You are not authorized to access this chat" });
+      } else {
+        // The authenticated user is authorized to access the chat
+        // Retrieve all prompts and responses for the chat
+        db.all(
+          "SELECT promptId, promptText, responseText FROM prompts WHERE chatId = ?",
+          [chatId],
+          (err, promptRows) => {
+            if (err) {
+              res.status(500).json({ message: "Error retrieving prompts" });
+            } else {
+              const promptsAndResponses = promptRows.map((promptRow) => ({
+                promptId: promptRow.promptId,
+                promptText: promptRow.promptText,
+                responseText: promptRow.responseText,
+              }));
+              res.status(200).json({ promptsAndResponses });
+            }
+          }
+        );
+      }
+    }
+  );
+});
+
+// Get all prompts and responses for a specific chat (protected route)
+app.get("/getChatData/:chatId", (req, res) => {
+  const { chatId } = req.params;
+  const authenticatedUserAddress = req.user.userAddress; // Extract user information from the JWT token
+
+  // Check if the chat belongs to the authenticated user
+  db.get(
+    "SELECT userAddress FROM chats WHERE chatId = ?",
+    [chatId],
+    (err, row) => {
+      if (err) {
+        res.status(500).json({ message: "Error checking chat ownership" });
+      } else if (!row) {
+        res.status(404).json({ message: "Chat not found" });
+      } else if (row.userAddress !== authenticatedUserAddress) {
+        res
+          .status(401)
+          .json({ message: "You are not authorized to access this chat" });
+      } else {
+        // The authenticated user is authorized to access the chat
+        // Retrieve all prompts and responses for the chat
+        db.all(
+          "SELECT promptText, responseText FROM prompts WHERE chatId = ?",
+          [chatId],
+          (err, promptRows) => {
+            if (err) {
+              res.status(500).json({ message: "Error retrieving prompts" });
+            } else {
+              const promptsAndResponses = promptRows.map((promptRow) => ({
+                promptText: promptRow.promptText,
+                responseText: promptRow.responseText,
+              }));
+              res.status(200).json({ promptsAndResponses });
+            }
+          }
+        );
+      }
+    }
+  );
+});
+
 const port = 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
