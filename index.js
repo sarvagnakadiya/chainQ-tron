@@ -1,26 +1,17 @@
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
-// const TronWeb = require("tronweb");
 const dotenv = require("dotenv");
+const TronWeb = require("tronweb");
 
 dotenv.config();
-
-// const tronProApiKey = process.env.TRON_PRO_API_KEY;
-// const privateKey = process.env.PRIVATE_KEY;
-// const tronRpcUrl = process.env.TRON_RPC_QN_URL;
-
-// const tronWeb = new TronWeb({
-//   fullHost: "https://api.trongrid.io",
-//   headers: { "TRON-PRO-API-KEY": tronProApiKey },
-//   privateKey: privateKey,
-// });
 
 // Importing JWT Packages
 const expressJwt = require("express-jwt");
 const jwt = require("jsonwebtoken");
 
 // Secret key for JWT
-const JWT_SECRET_KEY = "b8b18ea0f3bed1d764c8e073a8a4aa63";
+const JWT_SECRET_KEY = process.env.JWT_ENV;
+const MSG_TO_SIGN = process.env.MSG_TO_SIGN;
 
 const app = express();
 app.use(express.json());
@@ -100,32 +91,19 @@ db.serialize(() => {
 app.post("/login", (req, res) => {
   const { userAddress, signature } = req.body;
 
-  // Verify the Tron signature and extract the public address
-  // const signerAddress = tronWeb.trx.verifyMessageV2(message, signature);
-
-  // if (signerAddress.toLowerCase() !== userAddress.toLowerCase()) {
-  //   res.status(401).json({ message: "Signature does not match user address" });
-  //   return;
-  // }
-
-  // Update the password field for the user
-  db.run(
-    "INSERT OR REPLACE INTO users (userAddress, password) VALUES (?, ?)",
-    [userAddress, signature], // Store the Tron signature as the "password"
-    (err) => {
-      if (err) {
-        res.status(500).json({ message: "Error updating password" });
-      } else {
-        const payload = {
-          userAddress, // You can include any user-related information here
-        };
-
-        const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: "1d" });
-
-        res.json({ token });
-      }
-    }
-  );
+  // const predefinedMessage = "hello";
+  const address = TronWeb.Trx.verifyMessageV2(MSG_TO_SIGN, signature);
+  if (address === userAddress) {
+    // Signature is valid, create a JWT token for the user
+    const payload = {
+      userAddress, // You can include any user-related information here
+    };
+    const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: "1d" });
+    res.json({ token });
+  } else {
+    // Invalid signature
+    res.status(401).json({ message: "Invalid signature" });
+  }
 });
 
 app.post("/chat", (req, res) => {
@@ -359,7 +337,38 @@ app.get("/getUserChatsAndPrompts/:userAddress", (req, res) => {
   );
 });
 
+// newly added endPoints 4 sept
+// Get user's chat IDs based on userAddress (protected route)
+app.get("/getUserChatIds/:userAddress", (req, res) => {
+  const { userAddress } = req.params;
+  const authenticatedUserAddress = req.user.userAddress; // Extract user information from the JWT token
+
+  // Check if the requested userAddress matches the authenticated user's userAddress
+  if (userAddress !== authenticatedUserAddress) {
+    res
+      .status(401)
+      .json({ message: "You are not authorized to access this user's data" });
+    return;
+  }
+
+  // Query the database to retrieve the user's chat IDs
+  db.all(
+    "SELECT chatId FROM chats WHERE userAddress = ?",
+    [userAddress],
+    (err, chatRows) => {
+      if (err) {
+        res.status(500).json({ message: "Error retrieving user's chat IDs" });
+      } else {
+        const chatIds = chatRows.map((chatRow) => chatRow.chatId);
+        res.status(200).json({ chatIds });
+      }
+    }
+  );
+});
+
 const port = 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+module.exports = app;
