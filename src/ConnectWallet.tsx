@@ -1,6 +1,6 @@
 import { WalletActionButton } from "@tronweb3/tronwallet-adapter-react-ui";
 // import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
-import "./ConnectWallet.css"
+import "./ConnectWallet.css";
 
 export function ConnectWallet() {
   return (

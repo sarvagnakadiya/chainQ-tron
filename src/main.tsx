@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-import { App } from "./App.tsx";
+import { App } from "./App.js";
 import "./index.css";
 import React from "react";
 import type {
@@ -10,19 +10,15 @@ import {
   WalletDisconnectedError,
   WalletNotFoundError,
 } from "@tronweb3/tronwallet-abstract-adapter";
-import {
-  WalletProvider,
-} from "@tronweb3/tronwallet-adapter-react-hooks";
-import {
-  WalletModalProvider,
-} from "@tronweb3/tronwallet-adapter-react-ui";
+import { WalletProvider } from "@tronweb3/tronwallet-adapter-react-hooks";
+import { WalletModalProvider } from "@tronweb3/tronwallet-adapter-react-ui";
 import toast from "react-hot-toast";
 import { TronLinkAdapter } from "@tronweb3/tronwallet-adapters";
 
 function onError(e: WalletError) {
   console.log(e);
   if (e instanceof WalletNotFoundError) {
-    alert(e.message)
+    alert(e.message);
     toast.error(e.message);
   } else if (e instanceof WalletDisconnectedError) {
     toast.error(e.message);
