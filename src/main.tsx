@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom/client";
 import { App } from "./App.tsx";
 import "./index.css";
-import React, { useMemo, useState } from "react";
+import React from "react";
 import type {
   Adapter,
   WalletError,
@@ -18,7 +18,6 @@ import {
 } from "@tronweb3/tronwallet-adapter-react-ui";
 import toast from "react-hot-toast";
 import { TronLinkAdapter } from "@tronweb3/tronwallet-adapters";
-
 
 function onError(e: WalletError) {
   console.log(e);
