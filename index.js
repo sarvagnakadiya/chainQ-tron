@@ -2,7 +2,7 @@ const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
 const dotenv = require("dotenv");
 const TronWeb = require("tronweb");
-
+const cors = require("cors");
 dotenv.config();
 
 // Importing JWT Packages
@@ -25,12 +25,14 @@ const db = new sqlite3.Database("chat_database.db", (err) => {
   }
 });
 
+app.use(cors());
+
 // Authorization middleware to protect routes
 app.use(
   expressJwt({
     secret: JWT_SECRET_KEY,
     algorithms: ["HS256"],
-  }).unless({ path: ["/login", "/addUser"] })
+  }).unless({ path: ["/login"] })
 );
 
 // Error handling middleware for invalid tokens
@@ -57,8 +59,7 @@ app.use((err, req, res, next) => {
 db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS users (
-      userAddress TEXT PRIMARY KEY,
-      password TEXT
+      userAddress TEXT PRIMARY KEY
     )
   `);
 
@@ -91,8 +92,8 @@ db.serialize(() => {
 app.post("/login", (req, res) => {
   const { userAddress, signature } = req.body;
 
-  // const predefinedMessage = "hello";
-  const address = TronWeb.Trx.verifyMessageV2(MSG_TO_SIGN, signature);
+  const predefinedMessage = "hello";
+  const address = TronWeb.Trx.verifyMessageV2(predefinedMessage, signature);
   if (address === userAddress) {
     // Signature is valid, create a JWT token for the user
     const payload = {
@@ -449,7 +450,7 @@ app.get("/getChatData/:chatId", (req, res) => {
   );
 });
 
-const port = 3000;
+const port = 3001;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
