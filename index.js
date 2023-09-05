@@ -93,7 +93,7 @@ app.post("/login", (req, res) => {
   const { userAddress, signature } = req.body;
 
   const predefinedMessage = "hello";
-  const address = TronWeb.Trx.verifyMessageV2(predefinedMessage, signature);
+  const address = TronWeb.Trx.verifyMessageV2(MSG_TO_SIGN, signature);
   if (address === userAddress) {
     // Signature is valid, create a JWT token for the user
     const payload = {
