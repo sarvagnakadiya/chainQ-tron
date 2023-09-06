@@ -12,17 +12,8 @@ import {
   WalletDisconnectedError,
   WalletNotFoundError,
 } from "@tronweb3/tronwallet-abstract-adapter";
-import {
-  useWallet,
-  WalletProvider,
-} from "@tronweb3/tronwallet-adapter-react-hooks";
-import {
-  WalletActionButton,
-  WalletConnectButton,
-  WalletDisconnectButton,
-  WalletModalProvider,
-  WalletSelectButton,
-} from "@tronweb3/tronwallet-adapter-react-ui";
+import { WalletProvider } from "@tronweb3/tronwallet-adapter-react-hooks";
+import { WalletModalProvider } from "@tronweb3/tronwallet-adapter-react-ui";
 import toast from "react-hot-toast";
 
 import {
@@ -33,7 +24,6 @@ import {
 } from "@tronweb3/tronwallet-adapters";
 import { WalletConnectAdapter } from "@tronweb3/tronwallet-adapter-walletconnect";
 import { LedgerAdapter } from "@tronweb3/tronwallet-adapter-ledger";
-import { Button } from "@tronweb3/tronwallet-adapter-react-ui";
 
 // export function App() {
 //   return (
