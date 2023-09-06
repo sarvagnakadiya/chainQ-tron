@@ -9,7 +9,16 @@ function Navbar() {
     <>
       <header className="header">
         <nav className="navbar">
-          <span className="logo" style={{ width: "30%" }}>
+          <span
+            className="logo"
+            style={{
+              width: "30%",
+              display: "flex",
+              textAlign: "center",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <Link to="/">
               <img
                 src={logo}
@@ -18,7 +27,15 @@ function Navbar() {
               />
             </Link>
           </span>
-          <div style={{ width: "30%" }}>
+          <div
+            style={{
+              width: "30%",
+              display: "flex",
+              textAlign: "center",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <ConnectWallet />
           </div>
         </nav>

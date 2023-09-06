@@ -7,23 +7,9 @@ import leftArrow from "../assets/left-arrow.png";
 const MessageHistory = ({
   messages,
   handleDeleteMessage,
-  handleNewChatClick,
-  toggleCovalentAPIs,
-  showCovalentAPIs,
-  covalentAPIsActive,
+  handleNewChatClick
 }) => {
-  const [exploreText, setExploreText] = useState("Explore Covalent");
-  const [exploreImage, setExploreImage] = useState(rightUp);
 
-  useEffect(() => {
-    if (covalentAPIsActive) {
-      setExploreText("Back to prompt");
-      setExploreImage(leftArrow);
-    } else {
-      setExploreText("Explore Covalent");
-      setExploreImage(rightUp);
-    }
-  }, [showCovalentAPIs, covalentAPIsActive]);
 
   const filteredMessages = messages.filter(
     (message) => message.sender !== "bot"

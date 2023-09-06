@@ -39,8 +39,7 @@ const Dashboard = () => {
       };
 
       axios
-        // .post("http://192.168.1.20:5002/get_answer", requestData, {
-        .post("http://127.0.0.1:5001/dummy", requestData, {
+        .post("https://api.dehitas.xyz/dummy", requestData, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -54,7 +53,7 @@ const Dashboard = () => {
             };
             setMessages((prevMessages) => [...prevMessages, botResponse]);
             setIsLoading(false);
-          }, 3000);
+          }, 1000);
         })
         .catch((error) => {
           console.log(error);
@@ -107,10 +106,10 @@ const Dashboard = () => {
   const userPrompt = "Your user prompt here";
   const requestData = { user_prompt: userPrompt };
 
-  const toggleCovalentAPIs = () => {
-    console.log("Inside Main component in toggleCovalentAPIs");
-    setShowCovalentAPIs(!showCovalentAPIs);
-  };
+  // const toggleCovalentAPIs = () => {
+  //   console.log("Inside Main component in toggleCovalentAPIs");
+  //   setShowCovalentAPIs(!showCovalentAPIs);
+  // };
 
   return (
     <div className="chat-app-container">
@@ -118,20 +117,16 @@ const Dashboard = () => {
         messages={messages}
         handleDeleteMessage={handleDeleteMessage}
         handleNewChatClick={handleNewChatClick}
-        toggleCovalentAPIs={toggleCovalentAPIs}
-        covalentAPIsActive={showCovalentAPIs}
       />
 
       <div className="chat-box-main">
         <div className="chat-box">
-          {showCovalentAPIs ? (
-            <CovalentAPIs />
-          ) : messages.length === 0 ? (
+          {!showChatLog ? (
             <EmptyComponent />
           ) : (
             <ChatLog messages={messages} isLoading={isLoading} />
           )}
-          {!showCovalentAPIs && ( // Show chat-input when not in CovalentAPIs view
+          
             <div className="chat-input">
               <div className="prompt-input-area">
                 <input
@@ -151,7 +146,7 @@ const Dashboard = () => {
                 </button>
               </div>
             </div>
-          )}
+          
         </div>
       </div>
     </div>

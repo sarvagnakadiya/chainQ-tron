@@ -5,13 +5,19 @@ import { useNavigate } from "react-router-dom";
 import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
 import { useState, useEffect } from "react";
 import Popup from "./Popup";
+import { toast } from "react-hot-toast";
 
 function Home() {
   const navigate = useNavigate();
   const { connected, address } = useWallet(); // Get wallet connection status and address
 
   const getStarted = () => {
-    navigate("./chat-dashboard");
+    if (connected) {
+      console.log("connected", connected);
+      navigate("./chat-dashboard");
+    } else {
+      toast.error("Please connect to the wallet first!");
+    }
   };
 
   const [showPopup, setShowPopup] = useState(false);
@@ -20,7 +26,7 @@ function Home() {
   useEffect(() => {
     // const popupShown = localStorage.getItem("popupShown");
     // if (connected && !popupShown) {
-    if (connected ) {
+    if (connected) {
       setShowPopup(true);
     }
   }, [connected]);
