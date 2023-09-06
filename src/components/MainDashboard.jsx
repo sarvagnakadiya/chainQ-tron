@@ -12,7 +12,6 @@ const Dashboard = () => {
   const [messages, setMessages] = useState([]);
   const [showChatLog, setShowChatLog] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showCovalentAPIs, setShowCovalentAPIs] = useState(false);
 
   useEffect(() => {
     if (
@@ -27,7 +26,7 @@ const Dashboard = () => {
     if (newMessage.trim() !== "") {
       setIsLoading(true);
       const userMessage = {
-        // id: uuidv4(),
+        id: uuidv4(),
         sender: "user",
         text: newMessage,
       };
@@ -47,7 +46,7 @@ const Dashboard = () => {
         .then((response) => {
           setTimeout(() => {
             const botResponse = {
-              // id: uuidv4(),
+              id: uuidv4(),
               sender: "bot",
               text: response.data.answer,
             };
