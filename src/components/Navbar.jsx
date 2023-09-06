@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
-import {ConnectWallet} from "../ConnectWallet.tsx"
+// import { ConnectWallet } from "../ConnectWallet.tsx";
+import { ConnectWallet } from "../ConnectWallet.tsx";
 
-// eslint-disable-next-line react/prop-types
-function Navbar({ togglePopup }) {
+function Navbar() {
   return (
     <>
       <header className="header">

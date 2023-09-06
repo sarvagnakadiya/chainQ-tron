@@ -5,7 +5,6 @@ import { addUser } from "../APIs/apis";
 import { useNavigate } from "react-router-dom";
 import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
 
-// eslint-disable-next-line react/prop-types
 const Popup = ({ onClose }) => {
   const { connected, address } = useWallet();
   console.log(address);
