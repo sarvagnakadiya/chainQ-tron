@@ -47,9 +47,9 @@ function ConnectWalletButton(props) {
         await updateCurrentAccount();
         setCurrentAccount(account);
         localStorage.setItem("currentAccount", account);
-        // eslint-disable-next-line react/prop-types
+
         props.setAddress(account);
-        // eslint-disable-next-line react/prop-types
+
         props.togglePopup();
       } else if (response.code === 4000) {
         alert("Already connection Initiated");

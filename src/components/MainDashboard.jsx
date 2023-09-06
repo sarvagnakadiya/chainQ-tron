@@ -6,7 +6,6 @@ import ChatLog from "./ChatLog";
 import MessageHistory from "./MessageHistory";
 import send from "../assets/send.png";
 import axios from "axios";
-import CovalentAPIs from "./CovalentAPIs";
 
 const Dashboard = () => {
   const [newMessage, setNewMessage] = useState("");
