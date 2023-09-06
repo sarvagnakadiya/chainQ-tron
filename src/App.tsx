@@ -3,7 +3,7 @@ import MainDashboard from "./components/MainDashboard.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 
-import React, { useMemo, useState } from "react";
+import { useMemo } from "react";
 import type {
   Adapter,
   WalletError,
