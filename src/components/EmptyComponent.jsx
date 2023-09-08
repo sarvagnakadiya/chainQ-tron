@@ -14,6 +14,9 @@ function EmptyComponent({ sendMessage, setNewMessage }) {
               fontFamily: "BeVietnamPro-SemiBold",
               fontSize: "20px",
               paddingBottom: "20px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
             Prompts example
@@ -25,7 +28,7 @@ function EmptyComponent({ sendMessage, setNewMessage }) {
               sendMessage();
             }}
           >
-            How many total transactions for block 108019738?
+            How many total transactions for block 54075718?
             <img src={arrow} style={{ width: "25px", padding: "10px" }}></img>
           </p>
           <p className="empty-que">

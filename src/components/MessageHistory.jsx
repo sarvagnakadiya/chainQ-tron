@@ -7,10 +7,8 @@ import leftArrow from "../assets/left-arrow.png";
 const MessageHistory = ({
   messages,
   handleDeleteMessage,
-  handleNewChatClick
+  handleClearChatClick,
 }) => {
-
-
   const filteredMessages = messages.filter(
     (message) => message.sender !== "bot"
   );
@@ -18,8 +16,11 @@ const MessageHistory = ({
   return (
     <>
       <div className="message-history">
-        <div className="side-menu-button" onClick={handleNewChatClick}>
-          <span>+</span>New Chat
+        <div className="side-menu-newChat-button">
+          <span>+</span> New Chat
+        </div>
+        <div className="side-menu-button" onClick={handleClearChatClick}>
+          <span>Clear All Chats</span>
         </div>
         <div className="chat-history-list" style={{ margin: "40px 0px" }}>
           {filteredMessages.length === 0 ? (

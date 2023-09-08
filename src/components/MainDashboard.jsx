@@ -38,7 +38,7 @@ const Dashboard = () => {
       };
 
       axios
-        .post("https://api.dehitas.xyz/dummy", requestData, {
+        .post("https://dummy-api-purvik6062.vercel.app/echo/", requestData, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -52,7 +52,7 @@ const Dashboard = () => {
             };
             setMessages((prevMessages) => [...prevMessages, botResponse]);
             setIsLoading(false);
-          }, 1000);
+          }, 3000);
         })
         .catch((error) => {
           console.log(error);
@@ -83,7 +83,7 @@ const Dashboard = () => {
     });
   };
 
-  const handleNewChatClick = () => {
+  const handleClearChatClick = () => {
     const confirmResult = window.confirm(
       "Are you sure you want to start a new chat?"
     );
@@ -102,8 +102,8 @@ const Dashboard = () => {
     }
   };
 
-  const userPrompt = "Your user prompt here";
-  const requestData = { user_prompt: userPrompt };
+  // const userPrompt = "Your user prompt here";
+  // const requestData = { user_prompt: userPrompt };
 
   // const toggleCovalentAPIs = () => {
   //   console.log("Inside Main component in toggleCovalentAPIs");
@@ -115,7 +115,7 @@ const Dashboard = () => {
       <MessageHistory
         messages={messages}
         handleDeleteMessage={handleDeleteMessage}
-        handleNewChatClick={handleNewChatClick}
+        handleClearChatClick={handleClearChatClick}
       />
 
       <div className="chat-box-main">
