@@ -4,52 +4,35 @@
   flex-direction: row;
 }
 
-.message-history {
-  width: 260px;
-  // padding: 40px 10px;
-  padding: 40px 0px 40px 20px;
-  // overflow-y: auto;
-  --tw-bg-opacity: 1;
-  background-color: #09090b;
+.prompt-input-area {
+  display: flex;
+  width: 90%;
+  left: 2%;
+  right: 2%;
+  top: 2%;
 }
 
-.message {
-  // margin-bottom: 8px;
-  padding: 10px 10px;
-  border-bottom: 1px solid lightgray;
-  display: flex;
-  color: white;
-  justify-content: space-between;
-}
-.message:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgba(32, 33, 35, var(--tw-bg-opacity));
-  border-radius: 10px;
-}
 .timestamp {
   font-size: 12px;
   color: #888;
 }
-.msg-span {
-  max-width: 80%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-top: 0.3rem;
-}
+
 .chat-box-main {
   flex: 1;
   display: flex;
   flex-direction: column;
   --tw-bg-opacity: 1;
-  background-color: #09090b;
+  background-color: #2f2f2f;
   padding: 10px;
   justify-content: space-between;
   overflow-y: auto;
   overflow-x: hidden;
+
 }
+
 .chat-box {
-  background-color: rgba(32, 33, 35, var(--tw-bg-opacity));
+  // background-color: rgba(32, 33, 35, var(--tw-bg-opacity));
+  background-color: #4b4b4b;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -59,40 +42,23 @@
   overflow-x: hidden;
   margin: 15px;
   border-radius: 30px;
+
 }
 
-// .chat-input {
-//   display: flex;
-//   align-items: center;
-//   margin: 20px auto;
-//   width: 70%;
-//   border-radius: 10px;
-//   background-color: #09090b;
-//   position: relative;
-// }
-
 .chat-input {
-  // display: flex;
-  // align-items: center;
-  // margin: 20px auto;
-  // width: 70%;
-  // border-radius: 10px;
-  // background-color: #09090b;
-  // position: fixed; /* Change to fixed */
-  // bottom: 10px; /* Adjust the value to position it properly */
   display: flex;
   align-items: center;
-  margin: 20px auto;
+  margin: 15px auto;
   width: 50%;
   border-radius: 10px;
-  background-color: #09090b;
+  background-color: #262b30;
   position: fixed;
   bottom: 5%;
   left: 35%;
 }
 
 input {
-  width: 220%;
+  // width: 220%;
   flex: 1 1;
   height: 40px;
   padding: 5px;
@@ -122,45 +88,13 @@ input {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #1e3747;
+  background-color: #888;
 }
 
 .send-btn[disabled] {
-  background-color: #a49b9b; // Disabled color
+  background-color: #202123; // Disabled color
   cursor: not-allowed;
 }
-
-.side-menu-button {
-  padding: 15px;
-  border: 1px solid white;
-  border-radius: 5px;
-  color: white;
-  text-align: start;
-  cursor: pointer;
-}
-.side-menu-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-.side-menu-button span {
-  padding-left: 6px;
-  padding-right: 12px;
-}
-.chat-log {
-  text-align: left;
-  color: black;
-  max-height: 67.5vh;
-  overflow-x: hidden;
-}
-
-.chat-msg-center {
-  padding: 17px 40px;
-  display: flex;
-  margin: 0 auto;
-  width: 80%;
-  align-items: center;
-}
-
-
 
 .chat-msg {
   padding: 0px 40px;
@@ -168,12 +102,14 @@ input {
   max-width: 100%;
   color: #ffffff;
 }
+
 .dash-title {
   text-align: center;
   color: white;
   margin: 30px 0px;
   font-size: 2.3rem;
 }
+
 .empty-que {
   border: 1px solid lightgray;
   padding: 10px 20px;
@@ -186,9 +122,12 @@ input {
   border-radius: 10px;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.25);
 }
+
 .empty-que:hover {
-  background-color: #09090b;
+  background-color: #343434;
+  cursor: default;
 }
+
 .common-que-flex {
   display: flex;
   align-items: flex-start;
@@ -198,34 +137,13 @@ input {
   width: 100%;
   justify-content: space-around;
 }
-.chat-log-title {
-  text-align: right;
-  padding: 30px;
-  font-size: 20px;
-  width: 150px;
-}
-.chat-avatar-user {
-  padding: 5px;
-  border-radius: 50px;
-  background-color: white;
-  margin-right: 0.5rem;
-}
-.chat-avatar-response {
-  padding: 5px;
-  border-radius: 50px;
-  margin-right: 0.5rem;
-
-}
-.delete-icon {
-  padding: 5px;
-  border-radius: 10px;
-}
 
 // .............home css..................
 .main-div-landing {
   background-color: #202123;
   min-height: 100vh;
 }
+
 .home-left-section {
   width: 50%;
   margin-left: 100px;
@@ -235,9 +153,11 @@ input {
   align-items: flex-start;
   justify-content: space-around;
 }
+
 .hero-right {
   width: 50%;
 }
+
 .hero-right-bg1 {
   width: 80%;
 }
@@ -250,6 +170,7 @@ input {
   justify-content: space-between;
   width: 85%;
 }
+
 .home-title {
   font-size: 3rem;
   letter-spacing: 2px;
@@ -267,11 +188,13 @@ input {
   width: 70%;
   line-height: 25px;
 }
+
 .start-btn-flex {
   padding: 20px 40px;
   border-radius: 50px;
   width: 30px;
 }
+
 .footer-flex {
   display: flex;
   position: absolute;
@@ -286,6 +209,7 @@ input {
   z-index: 1;
   justify-content: space-around;
 }
+
 .try-btn {
   background-color: #246aee;
   border: 1px solid #246aee;
@@ -297,12 +221,14 @@ input {
   margin-top: 30px;
   border-radius: 10px;
 }
+
 .try-btn:hover {
   box-shadow: rgb(42, 35, 207) 0px 4px 24px -6px;
   transition: all 200ms ease 0s;
   border: 1px solid #246aee;
   background-color: #09090b;
 }
+
 // ..............navbar css...............
 
 .navbar {
@@ -313,6 +239,7 @@ input {
   align-items: center;
   justify-content: space-between;
 }
+
 .logo h1 {
   line-height: 2;
   font-size: 30px;
@@ -332,6 +259,7 @@ input {
 
   position: relative;
 }
+
 @media (max-width: 768px) {
   /* .connect {
       visibility: hidden;
@@ -340,10 +268,12 @@ input {
   .header {
     .navbar {
       justify-content: space-around;
+
       .logo h1 {
         line-height: 1;
         font-size: 10px;
       }
+
       .navmenu {
         border-top-right-radius: 10px;
         border-bottom-right-radius: 10px;
@@ -364,9 +294,11 @@ input {
           margin: 2.5rem 0;
         }
       }
+
       .navmenu.active {
         left: 0;
       }
+
       .hamburger {
         /* margin-left: auto; */
         display: block;
@@ -389,62 +321,8 @@ input {
     }
   }
 }
-// .....................animation
-
-//........................loader
-$animationTime: 0.8s;
-$dotSize: 20px;
-
-.loader {
-  text-align: center;
-
-  span {
-    display: inline-block;
-    vertical-align: middle;
-    width: $dotSize;
-    height: $dotSize;
-    background: rgb(185, 180, 180);
-    border-radius: $dotSize;
-    animation: loader $animationTime infinite alternate;
-
-    &:nth-of-type(2) {
-      animation-delay: 0.2s;
-    }
-
-    &:nth-of-type(3) {
-      animation-delay: 0.6s;
-    }
-  }
-}
-
-@keyframes loader {
-  0% {
-    opacity: 0.9;
-    transform: scale(0.5);
-  }
-  100% {
-    opacity: 0.1;
-    transform: scale(1);
-  }
-}
 
 //............................
-
-.chat-history-list {
-  overflow-x: hidden;
-  min-height: 73%;
-  max-height: 73%;
-  background-color: #202123;
-  border-radius: 1rem;
-  justify-content: center;
-  align-items: center;
-}
-
-.no-messages-center {
-  text-align: center;
-  color: white;
-  padding: 20px;
-}
 
 .exp-cov-class-main {
   padding: 15px;
@@ -461,43 +339,61 @@ $dotSize: 20px;
   align-items: center;
   // justify-content: center;
 }
+
 .exp-cov-class-main:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
+
 .side-ex-cov-btn span {
   padding-left: 6px;
   padding-right: 12px;
 }
 
-
-.side-menu-newChat-button {
-  padding: 15px;
-  border: 1px solid white;
-  border-radius: 5px;
-  color: white;
-  text-align: start;
-  cursor: pointer;
-  margin-bottom: 0.4rem;
-}
-.side-menu-newChat-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-.side-menu-newChat-button span {
-  padding-left: 6px;
-  padding-right: 12px;
-}
+// .response-loader {
+// background-color: rgba(52, 152, 219, 0.5);
+// padding: 10px;
+// border-radius: 8px;
+// margin: 5px;
+// max-width: 70%;
+// }
 
 
+// ===================
 
-.chat-msg-user {
-  background-color: #a09c9c; 
-  padding: 5px;
-  // border-radius: 8px;
+.loader {
+  display: flex;
+  position: absolute;
+  top: 1.2rem;
+  right: -2rem;
+  width: 80px;
+  height: 24px;
 }
 
-.chat-msg-response {
-  background-color: #4b4b4b; 
-  color: #fff; 
-  padding: 5px;
-  // border-radius: 8px;
+.loader div {
+  // position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #ffffff;
+  border-radius: 50%;
+  animation: loader-animation 1.2s cubic-bezier(0, 0.1, 1, 0) infinite // animation: loader-animation 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+
+.loader div:nth-child(1) {
+  animation-delay: -0.2s;
+}
+
+.loader div:nth-child(2) {
+  animation-delay: -0.1s;
+}
+
+@keyframes loader-animation {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.5);
+  }
 }
