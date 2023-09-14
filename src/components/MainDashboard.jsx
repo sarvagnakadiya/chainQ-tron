@@ -122,43 +122,6 @@ const Dashboard = () => {
     }
   };
 
-  // const createNewSession = () => {
-  //   const hasActiveSessionWithZeroMessages = sessions.some(
-  //     (session) => messages[session.id]?.length === 0
-  //   );
-
-  //   // Check if there is no current session or if the current session has at least one message
-  //   if (
-  //     !currentSession ||
-  //     (messages[currentSession] &&
-  //       messages[currentSession].length > 0 &&
-  //       !hasActiveSessionWithZeroMessages)
-  //   ) {
-  //     const sessionName = "New Chat";
-  //     const chNum = sessions.length + 1;
-  //     if (sessionName) {
-  //       const newSession = {
-  //         id: uuidv4(),
-  //         name: sessionName + " " + chNum,
-  //         createdAt: new Date(),
-  //       };
-  //       setSessions([...sessions, newSession]);
-  //       setMessages({
-  //         ...messages,
-  //         [newSession.id]: [],
-  //       });
-  //       setCurrentSession(newSession.id);
-
-  //       if (inputRef.current) {
-  //         inputRef.current.focus();
-  //       }
-
-  //       return newSession.id; // Return the ID of the newly created session
-  //     }
-  //   }
-  //   return null; // Return null if a new session was not created
-  // };
-
   const createNewSession = async () => {
     const hasActiveSessionWithZeroMessages = sessions.some(
       (session) => messages[session.id]?.length === 0
