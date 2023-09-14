@@ -65,24 +65,29 @@ const Dashboard = () => {
     // Remove the messages for the session from the messages state
     const { [sessionId]: deletedSession, ...remainingMessages } = messages;
 
-    console.log(
-      "currentSession and sessionId in handleDeleteSession",
-      currentSession,
-      sessionId
-    );
-    console.log("remainingsession length", remainingSessions.length);
+    // console.log(
+    //   "currentSession and sessionId in handleDeleteSession",
+    //   currentSession,
+    //   sessionId
+    // );
+    // console.log("remainingsession length", remainingSessions.length);
 
-    // if (currentSession === sessionId) {
-    //   if (remainingSessions.length > 0) {
-    //     // Set the next session (if available) as the current session
-    //     setCurrentSession(remainingSessions[0].id);
-    //   } else {
-    //     // No remaining sessions, set currentSession to null
-    //     setCurrentSession(null);
-    //   }
-    // }
+    if (currentSession === sessionId) {
+      if (remainingSessions.length > 0) {
+        // Set the next session (if available) as the current session
+        const mostRecentSessionId =
+          remainingSessions.length > 0
+            ? remainingSessions[remainingSessions.length - 1].id
+            : null;
+        setCurrentSession(mostRecentSessionId);
+        // setCurrentSession(remainingSessions[0].id);
+      } else {
+        // No remaining sessions, set currentSession to null
+        setCurrentSession(null);
+      }
+    }
 
-    setCurrentSession(null);
+    // setCurrentSession(null);
     // Update the state after all modifications
     setSessions(remainingSessions);
     setMessages(remainingMessages);
@@ -122,7 +127,8 @@ const Dashboard = () => {
     }
   };
 
-  const createNewSession = async () => {
+  const createNewSession = () => {
+    // console.log("call");
     const hasActiveSessionWithZeroMessages = sessions.some(
       (session) => messages[session.id]?.length === 0
     );
@@ -147,6 +153,7 @@ const Dashboard = () => {
           ...messages,
           [newSession.id]: [],
         });
+        // console.log("setting current session");
         setCurrentSession(newSession.id);
 
         if (inputRef.current) {
@@ -179,20 +186,27 @@ const Dashboard = () => {
   };
 
   const sendMessage = async () => {
-    console.log("message sent to session:-", currentSession);
+    // console.log("message sent to session:-", currentSession);
+
+    let newCurrentSession;
 
     if (!currentSession) {
       // Try to create a new session
-      const newSessionId = await createNewSession();
-      if (!newSessionId) {
+      newCurrentSession = await createNewSession();
+      console.log(newCurrentSession);
+      if (!newCurrentSession) {
         // User canceled session creation, so do nothing
         return;
       }
-      return;
+      // return;
+    } else {
+      newCurrentSession = currentSession;
     }
+    console.log(newCurrentSession);
 
-    console.log("newMessage", newMessage);
-
+    // console.log("newMessage", newMessage);
+    // console.log(currentSession);
+    // if (currentSession) {
     if (newMessage.trim() !== "") {
       setIsLoading(true);
 
@@ -206,37 +220,23 @@ const Dashboard = () => {
       // Update the state with the user message first
       setMessages((prevMessages) => ({
         ...prevMessages,
-        [currentSession]: [
-          ...(prevMessages[currentSession] || []),
+        [newCurrentSession]: [
+          ...(prevMessages[newCurrentSession] || []),
           userMessage,
         ],
       }));
 
-      // // If the session name is still "New Chat," update it with the user's message
-      // if (
-      //   sessions.find((session) => session.id === currentSession).name ===
-      //   "New Chat"
-      // ) {
-      //   const updatedSessions = sessions.map((session) =>
-      //     session.id === currentSession
-      //       ? { ...session, name: newMessage.trim() }
-      //       : session
-      //   );
-      //   setSessions(updatedSessions);
-      // }
-
-      if (currentSession) {
-        const currentSessionObj = sessions.find(
-          (session) => session.id === currentSession
+      // If the session name is still "New Chat," update it with the user's message
+      const currentSessionObj = sessions.find(
+        (session) => session.id === newCurrentSession
+      );
+      if (currentSessionObj && currentSessionObj.name === "New Chat") {
+        const updatedSessions = sessions.map((session) =>
+          session.id === newCurrentSession
+            ? { ...session, name: newMessage.trim() }
+            : session
         );
-        if (currentSessionObj && currentSessionObj.name === "New Chat") {
-          const updatedSessions = sessions.map((session) =>
-            session.id === currentSession
-              ? { ...session, name: newMessage.trim() }
-              : session
-          );
-          setSessions(updatedSessions);
-        }
+        setSessions(updatedSessions);
       }
 
       // Prepare the request data
@@ -276,8 +276,8 @@ const Dashboard = () => {
             // Update the state with the bot response
             setMessages((prevMessages) => ({
               ...prevMessages,
-              [currentSession]: [
-                ...(prevMessages[currentSession] || []),
+              [newCurrentSession]: [
+                ...(prevMessages[newCurrentSession] || []),
                 botResponse,
               ],
             }));
@@ -294,6 +294,10 @@ const Dashboard = () => {
         setIsLoading(false);
       }
     }
+    // } else {
+    //   // If there is no current session, you can handle it here (e.g., show a message).
+    //   console.log("No current session. Please select or create a session.");
+    // }
   };
 
   const isSendButtonDisabled = newMessage === "";
@@ -319,7 +323,7 @@ const Dashboard = () => {
       <div className="chat-box-main">
         <div className="chat-box">
           {!showChatLog && currentSession === null ? (
-            <EmptyComponent sendMessage={sendMessage} />
+            <EmptyComponent />
           ) : (
             <ChatLog
               messages={messages[currentSession] || []}
