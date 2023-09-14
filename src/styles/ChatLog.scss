@@ -17,21 +17,22 @@
     display: flex;
     margin: 0 auto;
     width: 80%;
-    align-items: center;
+    // align-items: center;
 }
 
 .chat-msg-user {
     background-color: #4b4b4b;
     padding: 5px;
-    // text-align: justify;
-    color: #fff
+    text-align: justify;
+    color: #fff;
+    width: 100%;
 }
 
 .chat-msg-response {
     background-color: #414141;
     color: #fff;
     padding: 5px;
-    // text-align: justify;
+    text-align: justify;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -42,11 +43,35 @@
     border-radius: 50px;
     background-color: white;
     margin-right: 1rem;
+    height: 33px;
 }
 
 .chat-avatar-response {
     padding: 5px;
     border-radius: 50px;
     margin-right: 1rem;
+}
 
+.picopysimplelight {
+    cursor: pointer;
+}
+
+.chat-msg-bot {
+    display: flex;
+    width: 90%;
+}
+
+.copy-button {
+    position: relative;
+    left: auto;
+}
+
+// .loader-bounce-main {
+    // background-color: #414141;
+//     padding: 5px;
+// }
+
+.bounce-loader {
+    margin: 0 auto;
+    margin-bottom: 5px;
 }

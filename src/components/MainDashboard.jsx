@@ -16,17 +16,6 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef(null);
 
-  // Load sessions and messages from local storage on component mount
-  useEffect(() => {
-    const savedSessions =
-      JSON.parse(localStorage.getItem("chatSessions")) || [];
-    setSessions(savedSessions);
-
-    const savedMessages =
-      JSON.parse(localStorage.getItem("chatMessages")) || {};
-    setMessages(savedMessages);
-  }, []);
-
   useEffect(() => {
     // Check if isLoading becomes false and the input field exists in the DOM
     if (!isLoading && inputRef.current) {
@@ -41,43 +30,65 @@ const Dashboard = () => {
     localStorage.setItem("chatMessages", JSON.stringify(messages));
   }, [sessions, messages]);
 
-  const createNewSession = () => {
-    const sessionName = prompt("Enter a name for the new session:");
-    if (sessionName) {
-      const newSession = {
-        id: uuidv4(),
-        name: sessionName,
-      };
-      setSessions([...sessions, newSession]);
-      setMessages({
-        ...messages,
-        [newSession.id]: [],
-      });
-      setCurrentSession(newSession.id);
-    }
-  };
+  useEffect(() => {
+    const savedSessions =
+      JSON.parse(localStorage.getItem("chatSessions")) || [];
+    const savedMessages =
+      JSON.parse(localStorage.getItem("chatMessages")) || {};
 
-  const switchSession = (sessionId) => {
-    setCurrentSession(sessionId);
-  };
+    // // Filter out any sessions that don't have corresponding messages in local storage
+    // const filteredSessions = savedSessions.filter((session) =>
+    //   savedMessages.hasOwnProperty(session.id)
+    // );
 
-  const handleDeleteSession = (sessionId) => {
+    // console.log("Loaded sessions from local storage:", filteredSessions);
+    console.log("Loaded sessions from local storage:", savedSessions);
+    console.log("Loaded messages from local storage:", savedMessages);
+
+    // setSessions(filteredSessions);
+    setSessions(savedSessions);
+    setMessages(savedMessages);
+  }, []);
+
+  useEffect(() => {
+    console.log("Updated sessions:", sessions);
+    console.log("Current session:", currentSession);
+  }, [sessions, currentSession]);
+
+  const handleDeleteSession = (event, sessionId) => {
+    event.stopPropagation();
+    // Remove the session from the sessions state
     const remainingSessions = sessions.filter(
       (session) => session.id !== sessionId
     );
-    setSessions(remainingSessions);
 
-    // Delete messages for the session
+    // Remove the messages for the session from the messages state
     const { [sessionId]: deletedSession, ...remainingMessages } = messages;
+
+    console.log(
+      "currentSession and sessionId in handleDeleteSession",
+      currentSession,
+      sessionId
+    );
+    console.log("remainingsession length", remainingSessions.length);
+
+    // if (currentSession === sessionId) {
+    //   if (remainingSessions.length > 0) {
+    //     // Set the next session (if available) as the current session
+    //     setCurrentSession(remainingSessions[0].id);
+    //   } else {
+    //     // No remaining sessions, set currentSession to null
+    //     setCurrentSession(null);
+    //   }
+    // }
+
+    setCurrentSession(null);
+    // Update the state after all modifications
+    setSessions(remainingSessions);
     setMessages(remainingMessages);
 
-    // If the deleted session was the current one, switch to another session or set it to null.
-    if (currentSession === sessionId) {
-      if (remainingSessions.length > 0) {
-        setCurrentSession(remainingSessions[0].id);
-      } else {
-        setCurrentSession(null);
-      }
+    if (inputRef.current) {
+      inputRef.current.focus();
     }
   };
 
@@ -93,14 +104,141 @@ const Dashboard = () => {
     }
   };
 
-  const sendMessage = () => {
+  const switchSession = async (sessionId) => {
+    // Check if the specified sessionId exists in the sessions state
+    const isSessionAvailable = sessions.some(
+      (session) => session.id === sessionId
+    );
+
+    if (isSessionAvailable) {
+      // Set the session only if it exists in the sessions state
+      setCurrentSession(sessionId);
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    } else {
+      // Handle the case where the session is not available (optional)
+      console.log(`Session with ID ${sessionId} does not exist.`);
+    }
+  };
+
+  // const createNewSession = () => {
+  //   const hasActiveSessionWithZeroMessages = sessions.some(
+  //     (session) => messages[session.id]?.length === 0
+  //   );
+
+  //   // Check if there is no current session or if the current session has at least one message
+  //   if (
+  //     !currentSession ||
+  //     (messages[currentSession] &&
+  //       messages[currentSession].length > 0 &&
+  //       !hasActiveSessionWithZeroMessages)
+  //   ) {
+  //     const sessionName = "New Chat";
+  //     const chNum = sessions.length + 1;
+  //     if (sessionName) {
+  //       const newSession = {
+  //         id: uuidv4(),
+  //         name: sessionName + " " + chNum,
+  //         createdAt: new Date(),
+  //       };
+  //       setSessions([...sessions, newSession]);
+  //       setMessages({
+  //         ...messages,
+  //         [newSession.id]: [],
+  //       });
+  //       setCurrentSession(newSession.id);
+
+  //       if (inputRef.current) {
+  //         inputRef.current.focus();
+  //       }
+
+  //       return newSession.id; // Return the ID of the newly created session
+  //     }
+  //   }
+  //   return null; // Return null if a new session was not created
+  // };
+
+  const createNewSession = async () => {
+    const hasActiveSessionWithZeroMessages = sessions.some(
+      (session) => messages[session.id]?.length === 0
+    );
+
+    // Check if there is no current session or if the current session has at least one message
+    if (
+      !currentSession ||
+      (messages[currentSession] &&
+        messages[currentSession].length > 0 &&
+        !hasActiveSessionWithZeroMessages)
+    ) {
+      if (newMessage.trim() !== "") {
+        const sessionName = newMessage.trim();
+        // const chNum = sessions.length + 1;
+        const newSession = {
+          id: uuidv4(),
+          name: sessionName,
+          createdAt: new Date(),
+        };
+        setSessions([...sessions, newSession]);
+        setMessages({
+          ...messages,
+          [newSession.id]: [],
+        });
+        setCurrentSession(newSession.id);
+
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+
+        return newSession.id; // Return the ID of the newly created session
+      } else {
+        // const chNum = sessions.length + 1;
+        const newSession = {
+          id: uuidv4(),
+          name: "New Chat",
+          createdAt: new Date(),
+        };
+        setSessions([...sessions, newSession]);
+        setMessages({
+          ...messages,
+          [newSession.id]: [],
+        });
+        setCurrentSession(newSession.id);
+
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+
+        return newSession.id; // Return the ID of the newly created session
+      }
+    }
+    return null; // Return null if a new session was not created
+  };
+
+  const sendMessage = async () => {
+    console.log("message sent to session:-", currentSession);
+
+    if (!currentSession) {
+      // Try to create a new session
+      const newSessionId = createNewSession();
+      if (!newSessionId) {
+        // User canceled session creation, so do nothing
+        return;
+      }
+      return;
+    }
+
     if (newMessage.trim() !== "") {
       setIsLoading(true);
+
+      // Delay sending the Axios request to show the user's message first
       const userMessage = {
         id: uuidv4(),
         sender: "user",
         text: newMessage,
       };
+
+      // Update the state with the user message first
       setMessages((prevMessages) => ({
         ...prevMessages,
         [currentSession]: [
@@ -108,25 +246,55 @@ const Dashboard = () => {
           userMessage,
         ],
       }));
-      setNewMessage("");
 
+      // If the session name is still "New Chat," update it with the user's message
+      if (
+        sessions.find((session) => session.id === currentSession).name ===
+        "New Chat"
+      ) {
+        const updatedSessions = sessions.map((session) =>
+          session.id === currentSession
+            ? { ...session, name: newMessage.trim() }
+            : session
+        );
+        setSessions(updatedSessions);
+      }
+
+      // Prepare the request data
       const requestData = {
         user_prompt: newMessage,
       };
 
-      axios
-        .post("https://dummy-api-purvik6062.vercel.app/echo/", requestData, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then((response) => {
+      // Initialize a cancel token
+      let cancelToken;
+
+      // Create a cancel token source
+      const cancelTokenSource = axios.CancelToken.source();
+
+      // Assign the cancel token to cancelToken
+      cancelToken = cancelTokenSource.token;
+
+      try {
+        setNewMessage("");
+        const response = await axios.post(
+          "https://dummy-api-purvik6062.vercel.app/echo/",
+          requestData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            cancelToken: cancelToken,
+          }
+        );
+        if (cancelToken) {
           setTimeout(() => {
             const botResponse = {
               id: uuidv4(),
               sender: "bot",
               text: response.data.answer,
             };
+
+            // Update the state with the bot response
             setMessages((prevMessages) => ({
               ...prevMessages,
               [currentSession]: [
@@ -134,13 +302,18 @@ const Dashboard = () => {
                 botResponse,
               ],
             }));
+
             setIsLoading(false);
           }, 3000);
-        })
-        .catch((error) => {
-          console.log(error);
-          setIsLoading(false);
-        });
+        }
+      } catch (error) {
+        if (axios.isCancel(error)) {
+          console.log("Request canceled:", error.message);
+        } else {
+          console.log("Error:", error);
+        }
+        setIsLoading(false);
+      }
     }
   };
 
@@ -166,12 +339,13 @@ const Dashboard = () => {
 
       <div className="chat-box-main">
         <div className="chat-box">
-          {currentSession === null ? (
+          {!showChatLog && currentSession === null ? (
             <EmptyComponent />
           ) : (
             <ChatLog
               messages={messages[currentSession] || []}
               isLoading={isLoading}
+              currentSession={currentSession}
             />
           )}
 
