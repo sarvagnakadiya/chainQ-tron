@@ -21,13 +21,7 @@ function EmptyComponent({ sendMessage, setNewMessage }) {
           >
             Prompts example
           </div>
-          <p
-            className="empty-que"
-            onClick={() => {
-              setNewMessage("");
-              sendMessage();
-            }}
-          >
+          <p className="empty-que">
             How many total transactions for block 54075718?
             <img src={arrow} style={{ width: "25px", padding: "10px" }}></img>
           </p>

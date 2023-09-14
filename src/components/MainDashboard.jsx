@@ -183,13 +183,15 @@ const Dashboard = () => {
 
     if (!currentSession) {
       // Try to create a new session
-      const newSessionId = createNewSession();
+      const newSessionId = await createNewSession();
       if (!newSessionId) {
         // User canceled session creation, so do nothing
         return;
       }
       return;
     }
+
+    console.log("newMessage", newMessage);
 
     if (newMessage.trim() !== "") {
       setIsLoading(true);
@@ -210,17 +212,31 @@ const Dashboard = () => {
         ],
       }));
 
-      // If the session name is still "New Chat," update it with the user's message
-      if (
-        sessions.find((session) => session.id === currentSession).name ===
-        "New Chat"
-      ) {
-        const updatedSessions = sessions.map((session) =>
-          session.id === currentSession
-            ? { ...session, name: newMessage.trim() }
-            : session
+      // // If the session name is still "New Chat," update it with the user's message
+      // if (
+      //   sessions.find((session) => session.id === currentSession).name ===
+      //   "New Chat"
+      // ) {
+      //   const updatedSessions = sessions.map((session) =>
+      //     session.id === currentSession
+      //       ? { ...session, name: newMessage.trim() }
+      //       : session
+      //   );
+      //   setSessions(updatedSessions);
+      // }
+
+      if (currentSession) {
+        const currentSessionObj = sessions.find(
+          (session) => session.id === currentSession
         );
-        setSessions(updatedSessions);
+        if (currentSessionObj && currentSessionObj.name === "New Chat") {
+          const updatedSessions = sessions.map((session) =>
+            session.id === currentSession
+              ? { ...session, name: newMessage.trim() }
+              : session
+          );
+          setSessions(updatedSessions);
+        }
       }
 
       // Prepare the request data
@@ -303,7 +319,7 @@ const Dashboard = () => {
       <div className="chat-box-main">
         <div className="chat-box">
           {!showChatLog && currentSession === null ? (
-            <EmptyComponent />
+            <EmptyComponent sendMessage={sendMessage} />
           ) : (
             <ChatLog
               messages={messages[currentSession] || []}
