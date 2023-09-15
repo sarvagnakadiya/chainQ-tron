@@ -18,6 +18,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     // Check if isLoading becomes false and the input field exists in the DOM
+    // console.log(inputRef)
     if (!isLoading && inputRef.current) {
       // Focus on the input field
       inputRef.current.focus();
@@ -36,24 +37,24 @@ const Dashboard = () => {
     const savedMessages =
       JSON.parse(localStorage.getItem("chatMessages")) || {};
 
-    // // Filter out any sessions that don't have corresponding messages in local storage
-    // const filteredSessions = savedSessions.filter((session) =>
-    //   savedMessages.hasOwnProperty(session.id)
-    // );
+    // // // Filter out any sessions that don't have corresponding messages in local storage
+    // // const filteredSessions = savedSessions.filter((session) =>
+    // //   savedMessages.hasOwnProperty(session.id)
+    // // );
 
-    // console.log("Loaded sessions from local storage:", filteredSessions);
-    console.log("Loaded sessions from local storage:", savedSessions);
-    console.log("Loaded messages from local storage:", savedMessages);
+    // // console.log("Loaded sessions from local storage:", filteredSessions);
+    // console.log("Loaded sessions from local storage:", savedSessions);
+    // console.log("Loaded messages from local storage:", savedMessages);
 
-    // setSessions(filteredSessions);
+    // //setSessions(filteredSessions);
     setSessions(savedSessions);
     setMessages(savedMessages);
   }, []);
 
-  useEffect(() => {
-    console.log("Updated sessions:", sessions);
-    console.log("Current session:", currentSession);
-  }, [sessions, currentSession]);
+  // useEffect(() => {
+  //   console.log("Updated sessions:", sessions);
+  //   console.log("Current session:", currentSession);
+  // }, [sessions, currentSession]);
 
   const handleDeleteSession = (event, sessionId) => {
     event.stopPropagation();
@@ -179,6 +180,8 @@ const Dashboard = () => {
           inputRef.current.focus();
         }
 
+        setNewMessage("");
+
         return newSession.id; // Return the ID of the newly created session
       }
     }
@@ -192,8 +195,8 @@ const Dashboard = () => {
 
     if (!currentSession) {
       // Try to create a new session
-      newCurrentSession = await createNewSession();
-      console.log(newCurrentSession);
+      newCurrentSession = createNewSession();
+      // console.log(newCurrentSession);
       if (!newCurrentSession) {
         // User canceled session creation, so do nothing
         return;
@@ -202,7 +205,7 @@ const Dashboard = () => {
     } else {
       newCurrentSession = currentSession;
     }
-    console.log(newCurrentSession);
+    // console.log(newCurrentSession);
 
     // console.log("newMessage", newMessage);
     // console.log(currentSession);
@@ -256,6 +259,7 @@ const Dashboard = () => {
       try {
         setNewMessage("");
         const response = await axios.post(
+          // "https://api.dehitas.xyz/get_answer",
           "https://dummy-api-purvik6062.vercel.app/echo/",
           requestData,
           {
@@ -309,6 +313,10 @@ const Dashboard = () => {
     }
   };
 
+  function hasZeroMessages(sessionId) {
+    return messages[sessionId]?.length === 0;
+  }
+
   return (
     <div className="chat-app-container">
       <MessageHistory
@@ -322,8 +330,16 @@ const Dashboard = () => {
 
       <div className="chat-box-main">
         <div className="chat-box">
-          {!showChatLog && currentSession === null ? (
-            <EmptyComponent />
+          {/* {!showChatLog && currentSession === null ? ( */}
+          {(currentSession === null && !showChatLog) ||
+          (currentSession !== null &&
+            hasZeroMessages(currentSession) &&
+            !showChatLog) ? (
+            <EmptyComponent
+              setNewMessage={setNewMessage}
+              sendMessage={sendMessage}
+              inputRef={inputRef}
+            />
           ) : (
             <ChatLog
               messages={messages[currentSession] || []}

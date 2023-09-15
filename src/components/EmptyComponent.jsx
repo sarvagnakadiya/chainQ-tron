@@ -1,7 +1,21 @@
 import "../styles/main.scss";
 import arrow from "../assets/Arrow.png";
+import React, { useState } from "react";
 
-function EmptyComponent({ sendMessage, setNewMessage }) {
+function EmptyComponent({ sendMessage, setNewMessage, inputRef }) {
+  const sentences = [
+    "How many total transactions for block 54075718?",
+    "And list all the transaction hashes?",
+    "Can you give me more information about the same block?",
+  ];
+
+  const handleSentenceClick = (sentence) => {
+    setNewMessage(sentence);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
   return (
     <div style={{ width: "70%", margin: "50px auto" }}>
       <h1 className="dash-title">
@@ -21,18 +35,20 @@ function EmptyComponent({ sendMessage, setNewMessage }) {
           >
             Prompts example
           </div>
-          <p className="empty-que">
-            How many total transactions for block 54075718?
-            <img src={arrow} style={{ width: "25px", padding: "10px" }}></img>
-          </p>
-          <p className="empty-que">
-            And list all the transaction hashes?{" "}
-            <img src={arrow} style={{ width: "25px", padding: "10px" }}></img>
-          </p>
-          <p className="empty-que">
-            Can you give me more information about the same block?
-            <img src={arrow} style={{ width: "25px", padding: "10px" }}></img>
-          </p>
+          {sentences.map((sentence, index) => (
+            <p
+              key={index}
+              className="empty-que"
+              onClick={() => handleSentenceClick(sentence)}
+            >
+              {sentence}
+              <img
+                src={arrow}
+                style={{ width: "25px", padding: "10px" }}
+                alt="Arrow"
+              />
+            </p>
+          ))}
         </div>
       </div>
     </div>
