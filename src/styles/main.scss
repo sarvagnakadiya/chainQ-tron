@@ -166,7 +166,7 @@ input {
   display: flex;
   align-items: center;
   margin: 0 auto;
-  min-height: 78vh;
+  // min-height: 78vh;
   justify-content: space-between;
   width: 85%;
 }
@@ -197,9 +197,8 @@ input {
 
 .footer-flex {
   display: flex;
-  position: absolute;
   width: 100%;
-  padding: 20px 0px;
+  // padding: 20px 0px;
 
   bottom: 0;
   // background-image: url("../assets/footer.png");

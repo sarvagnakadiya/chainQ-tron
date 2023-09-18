@@ -1,39 +1,45 @@
-import "../styles/main.scss";
 import Navbar from "./Navbar";
 import hero from "../assets/hero.png";
 import { useNavigate } from "react-router-dom";
 import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Popup from "./Popup";
 import { toast } from "react-hot-toast";
+import Cookies from "js-cookie";
 
 function Home() {
   const navigate = useNavigate();
   const { connected, address } = useWallet(); // Get wallet connection status and address
+  const [isSigned, setIsSigned] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    // Check if the user has signed a message using cookies
+    const signatureFromCookie = Cookies.get(address); // Use the address as the key
+    if (signatureFromCookie) {
+      setIsSigned(true);
+    } else {
+      setIsSigned(false); // Address changed, reset the sign status
+    }
+  }, [address]); // Make sure to include address as a dependency
 
   const getStarted = () => {
     if (connected) {
-      console.log("connected", connected);
-      navigate("./chat-dashboard");
+      // Check if the user has signed a message
+      if (isSigned) {
+        // User has signed, navigate to "/chat-dashboard"
+        navigate("./chat-dashboard");
+      } else {
+        // User has not signed, show the popup
+        setShowPopup(true);
+      }
     } else {
       toast.error("Please connect to the wallet first!");
     }
   };
 
-  const [showPopup, setShowPopup] = useState(false);
-
-  // // useEffect to show the popup when the wallet is connected
-  useEffect(() => {
-    // const popupShown = localStorage.getItem("popupShown");
-    // if (connected && !popupShown) {
-    if (connected) {
-      setShowPopup(true);
-    }
-  }, [connected]);
-
   const togglePopup = () => {
     setShowPopup(!showPopup);
-    // localStorage.setItem("popupShown", "true");
   };
 
   return (
