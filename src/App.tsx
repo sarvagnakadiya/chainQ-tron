@@ -12,7 +12,10 @@ import {
   WalletDisconnectedError,
   WalletNotFoundError,
 } from "@tronweb3/tronwallet-abstract-adapter";
-import { WalletProvider } from "@tronweb3/tronwallet-adapter-react-hooks";
+import {
+  WalletProvider,
+  useWallet,
+} from "@tronweb3/tronwallet-adapter-react-hooks";
 import { WalletModalProvider } from "@tronweb3/tronwallet-adapter-react-ui";
 import toast from "react-hot-toast";
 
@@ -24,21 +27,23 @@ import {
 } from "@tronweb3/tronwallet-adapters";
 import { WalletConnectAdapter } from "@tronweb3/tronwallet-adapter-walletconnect";
 import { LedgerAdapter } from "@tronweb3/tronwallet-adapter-ledger";
-
-// export function App() {
-//   return (
-//     <div className="App">
-//       <BrowserRouter>
-//         <Routes>
-//           <Route path="/" element={<Home />}></Route>
-//           <Route path="/chat-dashboard" element={<MainDashboard />}></Route>
-//         </Routes>
-//       </BrowserRouter>
-//     </div>
-//   );
-// }
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 export function App() {
+  // const { connected, address } = useWallet();
+  const [isSigned, setIsSigned] = useState();
+
+  // useEffect(() => {
+  //   // Check if the user has signed a message using cookies
+  //   const signatureFromCookie = Cookies.get(address); // Use the address as the key
+  //   if (signatureFromCookie) {
+  //     setIsSigned(true);
+  //   } else {
+  //     setIsSigned(false); // Address changed, reset the sign status
+  //   }
+  // }, [address]);
+
   function onError(e: WalletError) {
     console.log(e);
     if (e instanceof WalletNotFoundError) {
@@ -112,6 +117,13 @@ export function App() {
   async function onAdapterChanged(adapter: Adapter | null) {
     console.log("onAdapterChanged", adapter);
   }
+
+  // function isUserAuthenticated() {
+  //   const isConnected = connected;
+  //   const signatureFromCookie = Cookies.get(address);
+  //   return isConnected && signatureFromCookie;
+  // }
+
   return (
     <WalletProvider
       onError={onError}

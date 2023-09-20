@@ -2,16 +2,16 @@ import Navbar from "./Navbar";
 import hero from "../assets/hero.png";
 import { useNavigate } from "react-router-dom";
 import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
-import { useEffect, useState } from "react";
 import Popup from "./Popup";
 import { toast } from "react-hot-toast";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
 function Home() {
   const navigate = useNavigate();
   const { connected, address } = useWallet(); // Get wallet connection status and address
-  const [isSigned, setIsSigned] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
+  const [isSigned, setIsSigned] = useState(null);
 
   useEffect(() => {
     // Check if the user has signed a message using cookies

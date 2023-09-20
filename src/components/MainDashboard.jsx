@@ -6,8 +6,12 @@ import ChatLog from "./ChatLog";
 import MessageHistory from "./MessageHistory";
 import axios from "axios";
 import { TbSend } from "react-icons/tb";
+import { getUserChatIds } from "../APIs/apis";
+import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
+import Cookies from "js-cookie";
 
 const Dashboard = () => {
+  const { connected, address } = useWallet();
   const [newMessage, setNewMessage] = useState("");
   const [sessions, setSessions] = useState([]);
   const [messages, setMessages] = useState({});
@@ -15,6 +19,19 @@ const Dashboard = () => {
   const [currentSession, setCurrentSession] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef(null);
+  const [isSigned, setIsSigned] = useState(null);
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const signatureFromCookie = Cookies.get(address); // Use the address as the key
+    console.log("signatureFromCookie", signatureFromCookie);
+    if (signatureFromCookie) {
+      setToken(signatureFromCookie);
+      setIsSigned(true);
+    } else {
+      setIsSigned(false); 
+    }
+  }, [address]); 
 
   useEffect(() => {
     // Check if isLoading becomes false and the input field exists in the DOM
@@ -25,36 +42,49 @@ const Dashboard = () => {
     }
   }, [isLoading]);
 
-  // Save sessions and messages to local storage whenever they change
-  useEffect(() => {
-    localStorage.setItem("chatSessions", JSON.stringify(sessions));
-    localStorage.setItem("chatMessages", JSON.stringify(messages));
-  }, [sessions, messages]);
-
-  useEffect(() => {
-    const savedSessions =
-      JSON.parse(localStorage.getItem("chatSessions")) || [];
-    const savedMessages =
-      JSON.parse(localStorage.getItem("chatMessages")) || {};
-
-    // // // Filter out any sessions that don't have corresponding messages in local storage
-    // // const filteredSessions = savedSessions.filter((session) =>
-    // //   savedMessages.hasOwnProperty(session.id)
-    // // );
-
-    // // console.log("Loaded sessions from local storage:", filteredSessions);
-    // console.log("Loaded sessions from local storage:", savedSessions);
-    // console.log("Loaded messages from local storage:", savedMessages);
-
-    // //setSessions(filteredSessions);
-    setSessions(savedSessions);
-    setMessages(savedMessages);
-  }, []);
+  // // Save sessions and messages to local storage whenever they change
+  // useEffect(() => {
+  //   localStorage.setItem("chatSessions", JSON.stringify(sessions));
+  //   localStorage.setItem("chatMessages", JSON.stringify(messages));
+  // }, [sessions, messages]);
 
   // useEffect(() => {
-  //   console.log("Updated sessions:", sessions);
-  //   console.log("Current session:", currentSession);
-  // }, [sessions, currentSession]);
+  //   const savedSessions =
+  //     JSON.parse(localStorage.getItem("chatSessions")) || [];
+  //   const savedMessages =
+  //     JSON.parse(localStorage.getItem("chatMessages")) || {};
+
+  //   setSessions(savedSessions);
+  //   setMessages(savedMessages);
+  // }, []);
+
+  // useEffect(() => {
+  //   // Check if there is an authenticated user and get their chat IDs
+  //   if (connected) {
+  //     // console.log(connected)
+  //     getUserChatIds(address, token)
+  //       .then((response) => {
+  //         // console.log(address, token)
+  //         // console.log(response)
+  //         const chatData = response.data.chatData;
+  //         // console.log(chatData)
+  //         // Create a mapping of chat IDs to chat titles
+  //         const chatTitleMap = {};
+  //         chatData.forEach((chat) => {
+  //           chatTitleMap[chat.chatId] = chat.chatTitle;
+  //         });
+  //         // Update the sessions with chat titles
+  //         const updatedSessions = sessions.map((session) => ({
+  //           ...session,
+  //           name: chatTitleMap[session.id] || session.name,
+  //         }));
+  //         setSessions(updatedSessions);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error fetching user's chat IDs:", error);
+  //       });
+  //   }
+  // }, [address, sessions]);
 
   const handleDeleteSession = (event, sessionId) => {
     event.stopPropagation();
@@ -65,13 +95,6 @@ const Dashboard = () => {
 
     // Remove the messages for the session from the messages state
     const { [sessionId]: deletedSession, ...remainingMessages } = messages;
-
-    // console.log(
-    //   "currentSession and sessionId in handleDeleteSession",
-    //   currentSession,
-    //   sessionId
-    // );
-    // console.log("remainingsession length", remainingSessions.length);
 
     if (currentSession === sessionId) {
       if (remainingSessions.length > 0) {
@@ -87,8 +110,6 @@ const Dashboard = () => {
         setCurrentSession(null);
       }
     }
-
-    // setCurrentSession(null);
     // Update the state after all modifications
     setSessions(remainingSessions);
     setMessages(remainingMessages);
@@ -205,11 +226,7 @@ const Dashboard = () => {
     } else {
       newCurrentSession = currentSession;
     }
-    // console.log(newCurrentSession);
 
-    // console.log("newMessage", newMessage);
-    // console.log(currentSession);
-    // if (currentSession) {
     if (newMessage.trim() !== "") {
       setIsLoading(true);
 
@@ -298,10 +315,6 @@ const Dashboard = () => {
         setIsLoading(false);
       }
     }
-    // } else {
-    //   // If there is no current session, you can handle it here (e.g., show a message).
-    //   console.log("No current session. Please select or create a session.");
-    // }
   };
 
   const isSendButtonDisabled = newMessage === "";
@@ -330,7 +343,6 @@ const Dashboard = () => {
 
       <div className="chat-box-main">
         <div className="chat-box">
-          {/* {!showChatLog && currentSession === null ? ( */}
           {(currentSession === null && !showChatLog) ||
           (currentSession !== null &&
             hasZeroMessages(currentSession) &&

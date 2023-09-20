@@ -11,6 +11,39 @@ const MessageHistory = ({
   handleDeleteSession,
   handleClearChatClick,
 }) => {
+
+
+
+  useEffect(() => {
+    // Check if there is an authenticated user and get their chat IDs
+    if (connected) {
+      // console.log(connected)
+      getUserChatIds(address, token)
+        .then((response) => {
+          // console.log(address, token)
+          // console.log(response)
+          const chatData = response.data.chatData;
+          // console.log(chatData)
+          // Create a mapping of chat IDs to chat titles
+          const chatTitleMap = {};
+          chatData.forEach((chat) => {
+            chatTitleMap[chat.chatId] = chat.chatTitle;
+          });
+          // Update the sessions with chat titles
+          const updatedSessions = sessions.map((session) => ({
+            ...session,
+            name: chatTitleMap[session.id] || session.name,
+          }));
+          setSessions(updatedSessions);
+        })
+        .catch((error) => {
+          console.error("Error fetching user's chat IDs:", error);
+        });
+    }
+  }, [address, sessions]);
+
+  
+  console.log(sessions)
   // Sort sessions by creation date in descending order
   const sortedSessions = sessions
     .slice() // Create a copy of the sessions array to avoid mutating the original
