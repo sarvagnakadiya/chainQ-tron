@@ -15,10 +15,14 @@
     -webkit-transition: background-color 0.5s ease-out;
     border-radius: 0.5rem;
     cursor: pointer;
+
+    transition-duration: .50s;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(.4, 0, .2, 1);
 }
 
 .message-history {
-    width: 17%;
+    width: 15%;
     // padding: 40px 10px;
     // padding: 35px 0px 35px 20px;
     padding: 25px 0px 29px 20px;
@@ -46,12 +50,6 @@
 
 }
 
-
-// .chat-history-msg-list{
-//     max-height: 50%;
-// }
-
-
 .action-btns-mh {
     display: flex;
     margin: 0px 2px;
@@ -67,6 +65,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    
+    transition-duration: .25s;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(.4, 0, .2, 1);
 }
 
 .side-menu-button span {
@@ -75,8 +78,7 @@
 }
 
 .side-menu-button:hover {
-    background-color: #333;
-    // background-color: rgba(255, 255, 255, 0.1);
+    background-color: #6e6c6c39;
 }
 
 .side-menu-newChat-button {
@@ -88,16 +90,24 @@
     cursor: pointer;
     width: 80%;
     margin-right: 3%;
+
+    transition-duration: .25s;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(.4, 0, .2, 1);
 }
 
 .side-menu-newChat-button span {
     padding-left: 6px;
     padding-right: 12px;
+
+
 }
 
 .side-menu-newChat-button:hover {
-    background-color: #333;
+    background-color: #6e6c6c39;
     // background-color: rgba(255, 255, 255, 0.1);
+
+
 }
 
 .no-messages-center {
@@ -128,7 +138,7 @@
     color: #fff;
 }
 
-.session-main-title{
+.session-main-title {
     overflow: hidden;
     text-overflow: ellipsis;
 }

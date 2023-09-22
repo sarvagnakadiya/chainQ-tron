@@ -96,6 +96,7 @@ code {
 
 ::-webkit-scrollbar-thumb {
   background-color: #e8e7e777;
+  width: 7px;
   border-radius: 20px;
   overflow: hidden;
   transition: background-color 0.3s;

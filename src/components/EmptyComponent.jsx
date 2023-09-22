@@ -43,6 +43,7 @@ function EmptyComponent({ sendMessage, setNewMessage, inputRef }) {
             >
               {sentence}
               <img
+                className="arrowBtn"
                 src={arrow}
                 style={{ width: "25px", padding: "10px" }}
                 alt="Arrow"

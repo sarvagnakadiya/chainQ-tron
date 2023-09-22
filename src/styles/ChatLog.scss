@@ -13,11 +13,17 @@
 }
 
 .chat-msg-center {
-    padding: 17px 40px;
+    // padding: 13px 40px;
+    // display: flex;
+    // margin: 0 auto;
+    // width: 80%;
+
+    
+    padding: 13px 30px;
     display: flex;
-    margin: 0 auto;
-    width: 80%;
-    // align-items: center;
+    margin: 0px 2%;
+    width: 90%;
+
 }
 
 .chat-msg-user {
@@ -34,7 +40,7 @@
     padding: 5px;
     text-align: justify;
     display: flex;
-    justify-content: center;
+    // justify-content: center;
     align-items: center;
 }
 
@@ -47,7 +53,7 @@
 }
 
 .chat-avatar-response {
-    padding: 5px;
+    padding: 10px 5px 5px 5px;
     border-radius: 50px;
     margin-right: 1rem;
 }
@@ -64,18 +70,21 @@
 .copy-button {
     position: relative;
     left: auto;
+
+    // margin-left: auto;
+}
+
+
+.bounce-loader {
+    margin: 0 auto;
+    margin-bottom: 15px;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+    // text-align: center;
 }
 
 // .loader-bounce-main {
 //     background-color: #414141;
 //     padding: 5px;
 // }
-
-.bounce-loader {
-    margin: 0 auto;
-    // display: flex;
-    // align-items: center;
-    // justify-content: center;
-    // text-align: center;
-    margin-bottom: 15px;
-}
