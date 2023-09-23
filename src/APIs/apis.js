@@ -2,8 +2,10 @@
 
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3002/";
-// const API_BASE_URL = "https://chainq.lampros.tech/"; 
+// const API_BASE_URL = "http://localhost:3002/";
+const API_BASE_URL = "http://chainq.lampros.tech:3002/";
+
+// const API_BASE_URL = "https://chainq.lampros.tech/";
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -42,7 +44,6 @@ export const deleteChat = (chatId, token) => {
   });
 };
 
-
 export const getUserChatIds = (userAddress, token) => {
   return axiosInstance.get(`/getUserChatIds/${userAddress}`, {
     headers: {
@@ -51,7 +52,6 @@ export const getUserChatIds = (userAddress, token) => {
   });
 };
 
-
 export const deleteUserData = (userAddress, token) => {
   return axiosInstance.delete(`/deleteUserData/${userAddress}`, {
     headers: {
@@ -59,7 +59,6 @@ export const deleteUserData = (userAddress, token) => {
     },
   });
 };
-
 
 export const getChatPromptsAndResponses = (chatId, token) => {
   return axiosInstance.get(`/getChatPromptsAndResponses/${chatId}`, {
