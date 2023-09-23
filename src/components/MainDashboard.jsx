@@ -255,7 +255,7 @@ const Dashboard = () => {
 
       <div className="chat-box-main">
         <div className="chat-box">
-          {/* {(currentChatId === null && !showChatLog) ||
+          {(currentChatId === null && !showChatLog) ||
           (currentChatId !== null &&
             hasZeroMessages(currentChatId) &&
             !showChatLog) ? (
@@ -264,13 +264,13 @@ const Dashboard = () => {
               // sendMessage={sendMessage}
               inputRef={inputRef}
             />
-          ) : ( */}
+          ) : (
             <ChatLog
               messages={messages[currentChatId] || []}
               isLoading={isLoading}
               currentChatId={currentChatId}
             />
-          {/* )} */}
+          )}
 
           <div className="chat-input">
             <div className="prompt-input-area">
