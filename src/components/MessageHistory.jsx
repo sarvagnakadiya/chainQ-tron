@@ -9,6 +9,8 @@ import Cookies from "js-cookie";
 const MessageHistory = ({
   inputRef,
   sessions,
+  showChatLog,
+  setShowChatLog,
   setCurrentChatId,
   currentChatId,
   handleCreateNewChat,
@@ -65,31 +67,15 @@ const MessageHistory = ({
     setLatestChatId();
   }, [apiResponse, connected]);
 
-  // const handleSwitchSession = (chatId) => {
-  //   // console.log("getting chatId", chatId);
-  //   setCurrentChatId(chatId);
-  //   if (inputRef.current) {
-  //     inputRef.current.focus();
-  //   } else {
-  //     // Handle the case where the session is not available (optional)
-  //     console.log(`Session with ID ${chatId} does not exist.`);
-  //   }
-
-  //   const chatSessions = document.querySelectorAll(".chat-session");
-  //   chatSessions.forEach((session) => {
-  //     if (session.getAttribute("data-chat-id") === chatId) {
-  //       session.classList.add("active-session");
-  //     } else {
-  //       session.classList.remove("active-session");
-  //     }
-  //   });
-  // };
-
-  const handleSwitchSession = (chatId) => {
-    setCurrentChatId(chatId);
+  const handleSwitchSession = async (chatId) => {
+    console.log("getting chatId", chatId);
+    await setCurrentChatId(chatId);
+    // setShowChatLog(true);
+    console.log(currentChatId);
     if (inputRef.current) {
       inputRef.current.focus();
     } else {
+      // Handle the case where the session is not available (optional)
       console.log(`Session with ID ${chatId} does not exist.`);
     }
 
@@ -151,7 +137,12 @@ const MessageHistory = ({
   return (
     <div className="message-history">
       <div className="action-btns-mh">
-        <div className="side-menu-newChat-button" onClick={handleCreateNewChat}>
+        <div
+          className="side-menu-newChat-button"
+          onClick={() => {
+            handleCreateNewChat();
+          }}
+        >
           + New Chat
         </div>
         <div className="side-menu-button" onClick={handleDeleteUserData}>

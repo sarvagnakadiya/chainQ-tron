@@ -38,12 +38,17 @@ const Dashboard = () => {
   }, [currentChatId]);
 
   const handleCreateNewChat = () => {
-    console.log("call handleCreateNewChat");
+    console.log("called handleCreateNewChat");
     setCurrentChatId(null);
+    setShowChatLog(false);
+    setNewMessage("");
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
 
   const sendMessage = async () => {
-    console.log("call sendMessage");
+    console.log("called sendMessage");
     console.log("message sent to session:-", currentChatId);
   };
 
@@ -79,10 +84,11 @@ const Dashboard = () => {
 
       <div className="chat-box-main">
         <div className="chat-box">
-          {(currentChatId === null && !showChatLog) ||
+          {/* {(currentChatId === null && !showChatLog) ||
           (currentChatId !== null &&
             hasZeroMessages(currentChatId) &&
-            !showChatLog) ? (
+            !showChatLog) ? ( */}
+          {currentChatId === null && !showChatLog ? (
             <EmptyComponent
               setNewMessage={setNewMessage}
               sendMessage={sendMessage}
@@ -90,7 +96,9 @@ const Dashboard = () => {
             />
           ) : (
             <ChatLog
-              messages={messages[currentChatId] || []}
+              // messages={messages[currentChatId] || []}
+              setShowChatLog={setShowChatLog}
+              showChatLog={showChatLog}
               isLoading={isLoading}
               setCurrentChatId={setCurrentChatId}
               currentChatId={currentChatId}
