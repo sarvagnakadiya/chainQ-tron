@@ -1,6 +1,6 @@
 .message {
     // margin-bottom: 8px;
-    padding: 10px 10px;
+    padding: 10px 5px 10px 5px;
     // border-bottom: 1px solid lightgray;
     display: flex;
     color: white;
@@ -40,7 +40,8 @@
     border-radius: 1rem;
     justify-content: center;
     align-items: center;
-    padding: 3%;
+    // padding: 3%;
+    padding: 3% 0% 3% 4%;
     // overflow-x: hidden;
     // overflow-y: scroll;
     position: relative;
@@ -65,7 +66,7 @@
 }
 
 .chat-history-list::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
     z-index: 100;
 }
 
@@ -81,7 +82,7 @@
 
 
 .chat-history-msg-list {
-    max-width: 12.9rem;
+    max-width: 13rem;
 }
 
 .action-btns-mh {
@@ -165,21 +166,46 @@
 }
 
 
-.active-session {
-    background-color: #333;
-    // background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 0.4rem;
-    color: #fff;
-}
 
 .session-main-title {
     overflow: hidden;
+    white-space: nowrap;
     text-overflow: ellipsis;
 }
 
 
-// @media only screen and (max-width:1150px) {
-//     .message-history {
-//         min-width: 300px;
-//     }
-// }
+
+@keyframes slideIn {
+    0% {
+        transform: translateY(100%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+
+.chat-session {
+    margin-bottom: 5px;
+    position: relative;
+}
+
+.chat-session::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    margin: 3px auto;
+    /* left: 0; */
+    width: 90%;
+    border-bottom: 1px solid #555;
+    display: block;
+}
+
+.active-session {
+    background-color: #333;
+    // background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    color: #fff;
+    // transition: background-color 0.3s ease-in-out;
+}

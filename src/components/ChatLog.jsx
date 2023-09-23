@@ -12,7 +12,7 @@ import { BiCheck } from "react-icons/bi";
 import { BounceLoader } from "react-spinners";
 import { getUserChatIds, getChatPromptsAndResponses } from "../APIs/apis";
 
-const ChatLog = ({ messages, isLoading, currentChatId }) => {
+const ChatLog = ({ messages, isLoading, currentChatId, activeChatId }) => {
   const [copiedMessage, setCopiedMessage] = useState(null);
   const responseContainerRef = useRef(null);
   const [isSigned, setIsSigned] = useState(null);
@@ -21,34 +21,17 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
   const [apiResponse, setApiResponse] = useState([]);
   const [chatData, setChatData] = useState([]);
 
-  console.log(messages);
+  // console.log(messages);
   useEffect(() => {
     const signatureFromCookie = Cookies.get(address); // Use the address as the key
     console.log("signatureFromCookie", signatureFromCookie);
     if (signatureFromCookie) {
       setToken(signatureFromCookie);
       setIsSigned(true);
-
-      // Check if there is an authenticated user and get their chat IDs
-      if (connected) {
-        fetchUserChatIds(address, token);
-      }
     } else {
       setIsSigned(false);
     }
   }, [address, connected, token]);
-
-  const fetchUserChatIds = async () => {
-    try {
-      if (token) {
-        // Check if the token is defined
-        const response = await getUserChatIds(address, token);
-        setApiResponse(response.data.chatData);
-      }
-    } catch (error) {
-      console.error("Error fetching user's chat IDs:", error);
-    }
-  };
 
   const fetchChatPromptsAndResponses = async () => {
     try {
@@ -140,7 +123,7 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
                         {/* Bot avatar */}
                         <div className="chat-avatar-response">
                           <img
-                            src={icon} // Replace with your bot's avatar image
+                            src={icon}
                             alt="Bot Avatar"
                             style={{
                               width: "35px",
@@ -188,11 +171,9 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
             {isLoading && (
               <div className="loader-bounce-main">
                 <BounceLoader className="bounce-loader" color="#191919" />
-                {/* <BounceLoader className="bounce-loader" color="#adb0b0" /> */}
               </div>
             )}
             <div ref={responseContainerRef}></div>{" "}
-            {/* This element is used for focusing on the latest response */}
           </div>
         </div>
       )}
