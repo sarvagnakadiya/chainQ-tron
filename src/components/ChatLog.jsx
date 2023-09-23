@@ -124,10 +124,10 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
                         />
                       </div>
                       {/* Prompt text */}
-                      <div 
-                      // className="chat-msg-user"
-                      >
-                        <div>{chatItem.promptText}</div>
+                      <div className="chat-msg-user prompt-window-main">
+                        <div className="prompt-window-subClass">
+                          {chatItem.promptText}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -144,20 +144,15 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
                             alt="Bot Avatar"
                             style={{
                               width: "35px",
-                              height: "45px"
+                              height: "45px",
                             }}
                           />
                         </div>
                         {/* Response text */}
-                        <div
-                          // className="chat-msg-response"
-                          style={{
-                            width: "88%",
-                          }}
-                        >
-                          <div className="">
+                        <div className="chat-msg-response response-window-main">
+                          <div className="response-window-subClass">
                             {chatItem.responseText}
-                            </div>
+                          </div>
                         </div>
                         <div
                           className="copy-main-div"
