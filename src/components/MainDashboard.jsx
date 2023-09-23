@@ -41,7 +41,6 @@ const Dashboard = () => {
     console.log("called handleCreateNewChat");
     setCurrentChatId(null);
     setShowChatLog(false);
-    setNewMessage("");
     if (inputRef.current) {
       inputRef.current.focus();
     }
