@@ -21,6 +21,7 @@ const Dashboard = () => {
   const inputRef = useRef(null);
   const [isSigned, setIsSigned] = useState(null);
   const [token, setToken] = useState(null);
+  const [textareaHeight, setTextareaHeight] = useState(25);
 
   useEffect(() => {
     const signatureFromCookie = Cookies.get(address);
@@ -49,6 +50,8 @@ const Dashboard = () => {
   const sendMessage = async () => {
     console.log("called sendMessage");
     console.log("message sent to session:-", currentChatId);
+    setNewMessage("");
+    setTextareaHeight(25);
   };
 
   const isSendButtonDisabled = newMessage === "";
@@ -67,9 +70,54 @@ const Dashboard = () => {
     }
   };
 
-  function hasZeroMessages(sessionId) {
-    return messages[sessionId]?.length === 0;
-  }
+  useEffect(() => {
+    // Ensure the DOM is ready before adding the event listener
+    const promptInput = document.querySelector(".prompt-input");
+
+    if (promptInput) {
+      promptInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          // You can perform any other actions here, like submitting the form
+        }
+      });
+    }
+  }, []);
+
+  // // Handle textarea height changes when the content overflows
+  // useEffect(() => {
+  //   const textarea = inputRef.current;
+
+  //   if (textarea) {
+  //     textarea.style.height = "auto"; // Reset height to auto to calculate content height
+  //     const contentHeight = textarea.scrollHeight;
+  //     const maxHeight = 135;
+
+  //     if (contentHeight > maxHeight) {
+  //       textarea.style.height = maxHeight + "px";
+  //     } else {
+  //       textarea.style.height = contentHeight + "px";
+  //     }
+  //   }
+  // }, [newMessage]);
+
+  useEffect(() => {
+    const textarea = inputRef.current;
+
+    if (textarea) {
+      textarea.style.height = "auto"; // Reset height to auto to calculate content height
+      const contentHeight = textarea.scrollHeight;
+      const maxHeight = 135;
+
+      if (contentHeight > maxHeight) {
+        textarea.style.height = maxHeight + "px";
+        textarea.style.overflowY = "scroll"; // Enable vertical scrollbar
+      } else {
+        textarea.style.height = contentHeight + "px";
+        textarea.style.overflowY = "hidden"; // Hide vertical scrollbar
+      }
+    }
+  }, [newMessage]);
 
   return (
     <div className="chat-app-container">
@@ -106,7 +154,7 @@ const Dashboard = () => {
 
           <div className="chat-input">
             <div className="prompt-input-area">
-              <input
+              {/* <input
                 className="prompt-input-field"
                 type="text"
                 value={newMessage}
@@ -115,7 +163,19 @@ const Dashboard = () => {
                 placeholder="Send your query"
                 disabled={isLoading}
                 ref={inputRef}
-              />
+              /> */}
+              {/* <div className="prompt-container"> */}
+              <textarea
+                className="prompt-input"
+                // style={{ minHeight: textareaHeight + "px" }}
+                type="text"
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                onKeyDown={handleKeyPress}
+                placeholder="Send your query"
+                disabled={isLoading}
+                ref={inputRef}
+              ></textarea>
               <div>
                 {isLoading ? (
                   <div className="loader">
