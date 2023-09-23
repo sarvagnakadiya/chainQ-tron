@@ -21,14 +21,14 @@
 }
 
 .message-history {
-    width: 15%;
-    // padding: 40px 10px;
-    // padding: 35px 0px 35px 20px;
+    width: 229px !important;
+    min-width: 229px !important;
+    // width: 15% !important;
+    // min-height: 15% !important;
     padding: 25px 0px 29px 20px;
-    // overflow-y: auto;
     --tw-bg-opacity: 1;
     background-color: #2f2f2f;
-    // overflow-x: hidden;  
+    overflow-x: hidden;
 }
 
 .chat-history-list {
@@ -81,7 +81,7 @@
 
 
 .chat-history-msg-list {
-    width: 12.9rem;
+    max-width: 12.9rem;
 }
 
 .action-btns-mh {
@@ -176,3 +176,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+
+// @media only screen and (max-width:1150px) {
+//     .message-history {
+//         min-width: 300px;
+//     }
+// }

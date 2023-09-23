@@ -50,6 +50,7 @@
   align-items: center;
   margin: 15px auto;
   width: 50%;
+  min-width: 20% !important;
   border-radius: 10px;
   background-color: #292d30;
   // background-color: #262b30;
@@ -107,7 +108,7 @@ input {
   color: #595959;
   background-color: #00000000; // Disabled color
   box-shadow: none;
-  cursor:default;
+  cursor: default;
 }
 
 .chat-msg {
