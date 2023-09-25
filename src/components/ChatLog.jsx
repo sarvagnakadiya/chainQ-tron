@@ -18,8 +18,20 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
   const [isSigned, setIsSigned] = useState(null);
   const [token, setToken] = useState(null);
   const { connected, address } = useWallet();
-  const [apiResponse, setApiResponse] = useState([]);
+  const [activeId, setActiveId] = useState();
   const [chatData, setChatData] = useState([]);
+
+  // if (currentChatId === null) {
+  //   return <EmptyComponent />;
+  // }
+
+  useEffect(() => {
+    if (currentChatId === null) {
+      return <EmptyComponent />;
+    } else {
+      setActiveId(currentChatId);
+    }
+  }, [currentChatId, activeId]);
 
   useEffect(() => {
     const signatureFromCookie = Cookies.get(address);
@@ -27,29 +39,30 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
       setToken(signatureFromCookie);
       setIsSigned(true);
 
-      if (connected) {
-        fetchUserChatIds(address, token);
-      }
+      // if (connected) {
+      //   fetchUserChatIds(address, token);
+      // }
     } else {
       setIsSigned(false);
     }
   }, [address, connected, token]);
 
-  const fetchUserChatIds = async () => {
-    try {
-      if (token) {
-        const response = await getUserChatIds(address, token);
-        setApiResponse(response.data.chatData);
-      }
-    } catch (error) {
-      console.error("Error fetching user's chat IDs:", error);
-    }
-  };
+  // const fetchUserChatIds = async () => {
+  //   try {
+  //     if (token) {
+  //       const response = await getUserChatIds(address, token);
+  //       setApiResponse(response.data.chatData);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching user's chat IDs:", error);
+  //   }
+  // };
 
   const fetchChatPromptsAndResponses = async () => {
     try {
       if (token) {
-        const response = await getChatPromptsAndResponses(currentChatId, token);
+        const response = await getChatPromptsAndResponses(activeId, token);
+        console.log(response);
         setChatData(response.data.promptsAndResponses);
       }
     } catch (error) {
@@ -59,7 +72,7 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
 
   useEffect(() => {
     fetchChatPromptsAndResponses();
-  }, [currentChatId]);
+  }, [activeId]);
 
   useEffect(() => {
     if (responseContainerRef.current) {
@@ -132,71 +145,75 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
   // Function to render a chat message
   const renderChatMessage = (chatItem, index) => {
     return (
-      <div key={index} className="chat-msg-response">
-        {chatItem.promptText && (
-          <div className="chat-msg-center">
-            <div className="chat-avatar-user">
-              <img
-                src={user}
-                alt="User Avatar"
-                style={{
-                  width: "35px",
-                  borderRadius: "50px",
-                }}
-              />
-            </div>
-            <div className="chat-msg-user prompt-window-main">
-              <div className="prompt-window-subClass">
-                {chatItem.promptText}
-              </div>
-            </div>
-          </div>
-        )}
-        {chatItem.responseText && (
-          <>
+      <>
+        <div key={index} className="chat-msg-user">
+          {chatItem.promptText && (
             <div className="chat-msg-center">
-              <div className="chat-avatar-response">
+              <div className="chat-avatar-user">
                 <img
-                  src={icon}
-                  alt="Bot Avatar"
+                  src={user}
+                  alt="User Avatar"
                   style={{
                     width: "35px",
-                    height: "45px",
+                    borderRadius: "50px",
                   }}
                 />
               </div>
-              <div className="chat-msg-response response-window-main">
-                <div className="response-window-subClass">
-                  {renderJsonAsTable(chatItem.responseText)}
-                </div>
-              </div>
-              <div
-                className="copy-main-div"
-                style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  position: "relative",
-                  marginLeft: "2%",
-                  left: "0%",
-                }}
-              >
-                <div
-                  className="copy-button"
-                  onClick={() => copyToClipboard(chatItem.responseText)}
-                >
-                  {copiedMessage === chatItem.responseText ? (
-                    <div>
-                      <BiCheck className="bicheck" />
-                    </div>
-                  ) : (
-                    <PiCopySimpleLight className="picopysimplelight" />
-                  )}
+              <div className="chat-msg-user prompt-window-main">
+                <div className="prompt-window-subClass">
+                  {chatItem.promptText}
                 </div>
               </div>
             </div>
-          </>
-        )}
-      </div>
+          )}
+        </div>
+        <div key={index} className="chat-msg-response">
+          {chatItem.responseText && (
+            <>
+              <div className="chat-msg-center">
+                <div className="chat-avatar-response">
+                  <img
+                    src={icon}
+                    alt="Bot Avatar"
+                    style={{
+                      width: "35px",
+                      height: "45px",
+                    }}
+                  />
+                </div>
+                <div className="chat-msg-response response-window-main">
+                  <div className="response-window-subClass">
+                    {renderJsonAsTable(chatItem.responseText)}
+                  </div>
+                </div>
+                <div
+                  className="copy-main-div"
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    position: "relative",
+                    marginLeft: "2%",
+                    left: "0%",
+                  }}
+                >
+                  <div
+                    className="copy-button"
+                    onClick={() => copyToClipboard(chatItem.responseText)}
+                  >
+                    {copiedMessage === chatItem.responseText ? (
+                      <div>
+                        <BiCheck className="bicheck" />
+                      </div>
+                    ) : (
+                      <PiCopySimpleLight className="picopysimplelight" />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </>
     );
   };
 

@@ -1,6 +1,6 @@
 .chat-log-title {
   text-align: right;
-  padding: 30px;
+  padding: 15px;
   font-size: 20px;
   width: 150px;
 }
@@ -8,7 +8,7 @@
 .chat-log {
   text-align: left;
   color: black;
-  max-height: 67.5vh;
+  max-height: 72vh;
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -40,7 +40,7 @@
 .chat-msg-user {
   background-color: #4b4b4b;
   padding: 5px;
-  text-align: justify;
+//   text-align: justify;
   color: #fff;
   width: 100%;
 }
@@ -48,8 +48,8 @@
 .chat-msg-response {
   background-color: #414141;
   color: #fff;
-  padding: 5px;
-  text-align: justify;
+  padding: 5px 5px 20px 5px;
+//   text-align: justify;
   display: flex;
   flex-direction: column; /* Make it a column layout */
   align-items: flex-start; /* Align children to the start (left) */
