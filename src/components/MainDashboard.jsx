@@ -6,7 +6,7 @@ import ChatLog from "./ChatLog";
 import MessageHistory from "./MessageHistory";
 import axios from "axios";
 import { TbSend } from "react-icons/tb";
-import { getUserChatIds } from "../APIs/apis";
+import { getUserChatIds, addChat } from "../APIs/apis";
 import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
 import Cookies from "js-cookie";
 
@@ -14,7 +14,7 @@ const Dashboard = () => {
   const { connected, address } = useWallet();
   const [newMessage, setNewMessage] = useState("");
   const [sessions, setSessions] = useState([]);
-  const [messages, setMessages] = useState({});
+  // const [messages, setMessages] = useState({});
   const [showChatLog, setShowChatLog] = useState(false);
   const [currentChatId, setCurrentChatId] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -49,8 +49,40 @@ const Dashboard = () => {
 
   const sendMessage = async () => {
     console.log("called sendMessage");
-    console.log("message sent to session:-", currentChatId);
+    console.log("message sent to chat:-", currentChatId);
+    console.log(newMessage);
     setNewMessage("");
+
+    if (currentChatId) {
+      setIsLoading(true);
+      try {
+        const resData = await addChat(
+          address,
+          currentChatId,
+          newMessage,
+          token
+        );
+        console.log(resData);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error authenticating user:", error);
+      }
+    } else if (currentChatId == null) {
+      setIsLoading(true);
+      try {
+        const resData = await addChat(
+          address,
+          currentChatId,
+          newMessage,
+          token
+        );
+        console.log(resData);
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        console.error("Error authenticating user:", error);
+      }
+    }
     setTextareaHeight(25);
   };
 
@@ -83,23 +115,6 @@ const Dashboard = () => {
       });
     }
   }, []);
-
-  // // Handle textarea height changes when the content overflows
-  // useEffect(() => {
-  //   const textarea = inputRef.current;
-
-  //   if (textarea) {
-  //     textarea.style.height = "auto"; // Reset height to auto to calculate content height
-  //     const contentHeight = textarea.scrollHeight;
-  //     const maxHeight = 135;
-
-  //     if (contentHeight > maxHeight) {
-  //       textarea.style.height = maxHeight + "px";
-  //     } else {
-  //       textarea.style.height = contentHeight + "px";
-  //     }
-  //   }
-  // }, [newMessage]);
 
   useEffect(() => {
     const textarea = inputRef.current;
@@ -143,7 +158,6 @@ const Dashboard = () => {
             />
           ) : (
             <ChatLog
-              // messages={messages[currentChatId] || []}
               setShowChatLog={setShowChatLog}
               showChatLog={showChatLog}
               isLoading={isLoading}
@@ -152,9 +166,9 @@ const Dashboard = () => {
             />
           )}
 
-          <div className="chat-input">
-            <div className="prompt-input-area">
-              {/* <input
+          {/* <div className="chat-input"> */}
+          <div className="prompt-input-area">
+            {/* <input
                 className="prompt-input-field"
                 type="text"
                 value={newMessage}
@@ -164,37 +178,37 @@ const Dashboard = () => {
                 disabled={isLoading}
                 ref={inputRef}
               /> */}
-              {/* <div className="prompt-container"> */}
-              <textarea
-                className="prompt-input"
-                // style={{ minHeight: textareaHeight + "px" }}
-                type="text"
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                onKeyDown={handleKeyPress}
-                placeholder="Send your query"
-                disabled={isLoading}
-                ref={inputRef}
-              ></textarea>
-              <div>
-                {isLoading ? (
-                  <div className="loader">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                  </div>
-                ) : (
-                  <button
-                    onClick={sendMessage}
-                    disabled={isSendButtonDisabled}
-                    className="send-btn"
-                  >
-                    <TbSend />
-                  </button>
-                )}
-              </div>
+            {/* <div className="prompt-container"> */}
+            <textarea
+              className="prompt-input"
+              // style={{ minHeight: textareaHeight + "px" }}
+              type="text"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              onKeyDown={handleKeyPress}
+              placeholder="Send your query"
+              disabled={isLoading}
+              ref={inputRef}
+            ></textarea>
+            <div>
+              {isLoading ? (
+                <div className="loader">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+              ) : (
+                <button
+                  onClick={sendMessage}
+                  disabled={isSendButtonDisabled}
+                  className="send-btn"
+                >
+                  <TbSend />
+                </button>
+              )}
             </div>
           </div>
+          {/* </div> */}
         </div>
       </div>
     </div>

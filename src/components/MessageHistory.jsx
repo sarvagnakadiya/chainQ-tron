@@ -5,6 +5,7 @@ import "../styles/MessageHistory.scss";
 import { getUserChatIds, deleteChat, deleteUserData } from "../APIs/apis";
 import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
 import Cookies from "js-cookie";
+import PlansPopup from "./PlansPopup";
 
 const MessageHistory = ({
   inputRef,
@@ -20,6 +21,7 @@ const MessageHistory = ({
   const [apiResponse, setApiResponse] = useState([]);
   const [token, setToken] = useState(null);
   const { connected, address } = useWallet();
+  const [showSPopup, setShowSPopup] = useState();
 
   useEffect(() => {
     const signatureFromCookie = Cookies.get(address); // Use the address as the key
@@ -132,66 +134,82 @@ const MessageHistory = ({
     }
   };
 
+  const handleSubscribeBtn = () => {
+    setShowSPopup(true);
+  };
+
   // console.log(apiResponse);
   // console.log(chatTitleList)
   return (
-    <div className="message-history">
-      <div className="action-btns-mh">
-        <div
-          className="side-menu-newChat-button"
-          onClick={() => {
-            handleCreateNewChat();
-          }}
-        >
-          + New Chat
+    <>
+      <div className="message-history">
+        <div className="action-btns-mh">
+          <div
+            className="side-menu-newChat-button"
+            onClick={() => {
+              handleCreateNewChat();
+            }}
+          >
+            + New Chat
+          </div>
+          <div className="side-menu-button" onClick={handleDeleteUserData}>
+            <span>
+              <AiOutlineDelete />
+            </span>
+          </div>
         </div>
-        <div className="side-menu-button" onClick={handleDeleteUserData}>
-          <span>
-            <AiOutlineDelete />
-          </span>
-        </div>
-      </div>
-      <div className="chat-history-list">
-        <div className="chat-history-msg-list">
-          {apiResponse.length === 0 ? (
-            <div className="no-messages-center" style={{ color: "white" }}>
-              No chats yet.
-            </div>
-          ) : (
-            apiResponse
-              .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) // Sort in descending order
-              .map((chat) => (
-                // .map((chat) => (
-                <>
-                  <div
-                    key={chat.chatId}
-                    className={`message chat-session
-                    ${chat.chatId === currentChatId ? "active-session" : ""}`}
-                    onClick={() => handleSwitchSession(chat.chatId)}
-                    // data-chat-id={chat.chatId}
-                  >
-                    <div className="session-main-title">
-                      {/* {chat.chatTitle} */}
+        <div className="chat-history-list">
+          <div className="chat-history-msg-list">
+            <div className="chatTitle-list">
+              {apiResponse.length === 0 ? (
+                <div className="no-messages-center" style={{ color: "white" }}>
+                  No chats yet.
+                </div>
+              ) : (
+                apiResponse
+                  .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) // Sort in descending order
+                  .map((chat) => (
+                    // .map((chat) => (
+                    <>
+                      <div
+                        key={chat.chatId}
+                        className={`message chat-session
+                      ${chat.chatId === currentChatId ? "active-session" : ""}`}
+                        onClick={() => handleSwitchSession(chat.chatId)}
+                        // data-chat-id={chat.chatId}
+                      >
+                        <div className="session-main-title">
+                          {/* {chat.chatTitle} */}
 
-                      {chat.chatTitle.length >= 20 || chat.titleOverflow
-                        ? `${chat.chatTitle.substring(0, 20)}...`
-                        : chat.chatTitle}
-                    </div>
-                    <div
-                      className="delete-session"
-                      onClick={(event) => handleDeleteChat(event, chat.chatId)}
-                      // onClick={() => handleDeleteChat(chat.chatId)}
-                      // onClick={(event) => handleDeleteSession(event, chat.chatId)}
-                    >
-                      <RiDeleteBin6Line />
-                    </div>
-                  </div>
-                </>
-              ))
-          )}
+                          {chat.chatTitle.length >= 20 || chat.titleOverflow
+                            ? `${chat.chatTitle.substring(0, 20)}...`
+                            : chat.chatTitle}
+                        </div>
+                        <div
+                          className="delete-session"
+                          onClick={(event) =>
+                            handleDeleteChat(event, chat.chatId)
+                          }
+                        >
+                          <RiDeleteBin6Line />
+                        </div>
+                      </div>
+                    </>
+                  ))
+              )}
+            </div>
+          </div>
+          <div
+            className="upgrade-btn-class"
+            onClick={() => setShowSPopup(true)}
+          >
+            <div className="upgrade-btn-sub-class">Upgrade plan</div>
+          </div>
         </div>
       </div>
-    </div>
+
+      {showSPopup && <PlansPopup setShowSPopup={setShowSPopup} />}
+    </>
   );
 };
 

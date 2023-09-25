@@ -21,12 +21,11 @@ export const addChat = (
   userAddress,
   chatId,
   promptText,
-  responseText,
   token
 ) => {
   return axiosInstance.post(
-    "/chat",
-    { userAddress, chatId, promptText, responseText },
+    "/dummyChat",
+    { userAddress, chatId, promptText },
     {
       headers: {
         Authorization: `Bearer ${token}`,
