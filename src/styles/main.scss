@@ -6,14 +6,33 @@
 
 .prompt-input-area {
   display: flex;
-  width: 90%;
-  left: 2%;
-  right: 2%;
-  top: 2%;
+  width: 87%;
+  // left: 0%;
+  // right: 2%;
+  // top: 2%;
 
   flex-direction: column;
-  /* ... Other styles ... */
   position: relative;
+  /* ... Other styles ... */
+
+  max-height: 180px;
+  display: flex;
+  align-items: center;
+  margin: 15px auto;
+  width: 50%;
+  // min-width: 20% !important;
+  border-radius: 10px;
+  background-color: #292d30;
+  // background-color: #262b30;
+  position: fixed;
+  bottom: 2.5%;
+  left: 33%;
+  // box-shadow: 0px 0px 9px 0px rgb(0 0 0 / 64%);
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.11),
+    0 2px 2px rgba(0, 0, 0, 0.11),
+    0 4px 4px rgba(0, 0, 0, 0.11),
+    0 6px 8px rgba(0, 0, 0, 0.11),
+    0 8px 16px rgba(0, 0, 0, 0.11);
 }
 
 
@@ -26,14 +45,15 @@
 
 .prompt-input {
   // height: 30px;
-  width: 100%;
-  padding: 10px 49px 10px 10px;
+  width: -webkit-fill-available;
+  padding: 10px 52px 10px 14px;
+  ;
   border: 0px solid;
   border-radius: 10px;
   font-size: 16px;
   outline: none;
   resize: none;
-  min-width: 100%;
+  // min-width: 100%;
   max-width: 100%;
   // max-height: 135px;
   color: azure;
@@ -111,7 +131,7 @@
   background-color: #292d30;
   // background-color: #262b30;
   position: fixed;
-  bottom: 5%;
+  bottom: 2.5%;
   left: 33%;
   // box-shadow: 0px 0px 9px 0px rgb(0 0 0 / 64%);
   box-shadow: 1px 1px rgba(0, 0, 0, 0.11),
@@ -140,7 +160,7 @@ input {
 
 .send-btn {
   bottom: 10px;
-  right: -6%;
+  right: 2%;
   width: 36px;
   height: 36px;
   color: #000000;
@@ -447,7 +467,7 @@ input {
 .loader {
   display: flex;
   position: absolute;
-  top: 1.2rem;
+  top: 3.2rem;
   right: -2rem;
   width: 80px;
   height: 24px;

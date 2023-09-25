@@ -62,7 +62,7 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
     try {
       if (token) {
         const response = await getChatPromptsAndResponses(activeId, token);
-        console.log(response);
+        // console.log(response);
         setChatData(response.data.promptsAndResponses);
       }
     } catch (error) {

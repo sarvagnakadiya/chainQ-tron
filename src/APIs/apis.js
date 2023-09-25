@@ -3,7 +3,7 @@
 import axios from "axios";
 
 // const API_BASE_URL = "http://localhost:3002/";
-const API_BASE_URL = "http://chainq.lampros.tech:3002/";
+const API_BASE_URL = "https://chainq.lampros.tech/";
 
 // const API_BASE_URL = "https://chainq.lampros.tech/";
 
@@ -21,12 +21,11 @@ export const addChat = (
   userAddress,
   chatId,
   promptText,
-  responseText,
   token
 ) => {
   return axiosInstance.post(
-    "/chat",
-    { userAddress, chatId, promptText, responseText },
+    "/dummyChat",
+    { userAddress, chatId, promptText },
     {
       headers: {
         Authorization: `Bearer ${token}`,
