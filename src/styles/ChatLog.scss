@@ -40,7 +40,7 @@
 .chat-msg-user {
   background-color: #4b4b4b;
   padding: 5px;
-//   text-align: justify;
+  //   text-align: justify;
   color: #fff;
   width: 100%;
 }
@@ -49,19 +49,26 @@
   background-color: #414141;
   color: #fff;
   padding: 5px 5px 20px 5px;
-//   text-align: justify;
+  //   text-align: justify;
   display: flex;
-  flex-direction: column; /* Make it a column layout */
-  align-items: flex-start; /* Align children to the start (left) */
-  justify-content: flex-start; /* Align children to the start (top) */
+  flex-direction: column;
+  /* Make it a column layout */
+  align-items: flex-start;
+  /* Align children to the start (left) */
+  justify-content: flex-start;
+  /* Align children to the start (top) */
 }
 
 .json-table {
   margin-top: 10px;
-  border: 1px solid #ccc; /* Add a border to the JSON table */
-  border-radius: 4px; /* Add border radius for rounded corners */
-  padding: 10px; /* Add padding inside the table */
-  background-color: #333; /* Background color for the table */
+  border: 1px solid #ccc;
+  /* Add a border to the JSON table */
+  border-radius: 4px;
+  /* Add border radius for rounded corners */
+  padding: 10px;
+  /* Add padding inside the table */
+  background-color: #333;
+  /* Background color for the table */
 }
 
 .json-row {
@@ -152,4 +159,13 @@
 
 .response-window-main::-webkit-scrollbar-thumb:hover {
   background-color: #c2c2c2b0;
+}
+
+
+.chatLog-loader-main-class {
+  margin: 10px auto;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
 }
