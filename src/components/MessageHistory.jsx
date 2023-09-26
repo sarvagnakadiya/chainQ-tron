@@ -134,9 +134,7 @@ const MessageHistory = ({
     }
   };
 
-  const handleSubscribeBtn = () => {
-    setShowSPopup(true);
-  };
+  const handleSubscribeBtn = () => {};
 
   // console.log(apiResponse);
   // console.log(chatTitleList)

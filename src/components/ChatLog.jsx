@@ -47,17 +47,6 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
     }
   }, [address, connected, token]);
 
-  // const fetchUserChatIds = async () => {
-  //   try {
-  //     if (token) {
-  //       const response = await getUserChatIds(address, token);
-  //       setApiResponse(response.data.chatData);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching user's chat IDs:", error);
-  //   }
-  // };
-
   const fetchChatPromptsAndResponses = async () => {
     try {
       if (token) {
