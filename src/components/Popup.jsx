@@ -4,8 +4,12 @@ import { addUser } from "../APIs/apis";
 import { useNavigate } from "react-router-dom";
 import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
 import Cookies from "js-cookie";
+import abi from "../contract/artifacts/chainq_abi.json";
+import { CHAINQ_SHASTA_TESTNET } from "../config";
+import PlansPopup from "./PlansPopup";
+import PlanPopup from "./PlanPopup";
 
-const Popup = ({ onClose }) => {
+const Popup = ({ onClose, setShowPlanPopup }) => {
   const { connected, address } = useWallet();
   const [loading, setLoading] = useState(false); // Initialize loading state as false
   const navigate = useNavigate();
@@ -19,7 +23,22 @@ const Popup = ({ onClose }) => {
       if (resData.status === 200) {
         Cookies.set(address, resData.data.token);
         onClose();
-        navigate("/chat-dashboard");
+        const connectedContract = await tronWeb.contract(
+          abi,
+          CHAINQ_SHASTA_TESTNET
+        );
+        console.log(connectedContract);
+        let txget = await connectedContract
+          .getSubscriptionStatus(address)
+          .call();
+        console.log(txget.hasSubscription);
+
+        if (txget.hasSubscription) {
+          navigate("/chat-dashboard");
+        } else {
+          console.log("nai hai plan");
+          setShowPlanPopup(true);
+        }
       }
     } catch (error) {
       setLoading(false);
@@ -57,6 +76,7 @@ const Popup = ({ onClose }) => {
           )}
         </div>
       </div>
+      {/* {showPlanPopup ? <PlansPopup setShowSPopup={togglePopup} /> : null} */}
     </div>
   );
 };

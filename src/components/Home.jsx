@@ -2,15 +2,19 @@ import Navbar from "./Navbar";
 import hero from "../assets/hero.png";
 import { useNavigate } from "react-router-dom";
 import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
-import Popup from "./PlanPopup";
+import Popup from "./Popup";
 import { toast } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import PlansPopup from "./PlansPopup";
+import abi from "../contract/artifacts/chainq_abi.json";
+import { CHAINQ_SHASTA_TESTNET } from "../config";
 
 function Home() {
   const navigate = useNavigate();
   const { connected, address } = useWallet(); // Get wallet connection status and address
   const [showPopup, setShowPopup] = useState(false);
+  const [showPlanPopup, setShowPlanPopup] = useState(false);
   const [isSigned, setIsSigned] = useState(null);
 
   useEffect(() => {
@@ -23,15 +27,27 @@ function Home() {
     }
   }, [address]); // Make sure to include address as a dependency
 
-  const getStarted = () => {
+  const getStarted = async () => {
     if (connected) {
-      // Check if the user has signed a message
       if (isSigned) {
-        // User has signed, navigate to "/chat-dashboard"
-        navigate("./chat-dashboard");
+        const connectedContract = await tronWeb.contract(
+          abi,
+          CHAINQ_SHASTA_TESTNET
+        );
+
+        let txget = await connectedContract
+          .getSubscriptionStatus(address)
+          .call();
+        console.log(txget.hasSubscription);
+        // console.log(txget);
+        if (txget.hasSubscription) {
+          navigate("./chat-dashboard");
+        } else {
+          setShowPlanPopup(!showPlanPopup);
+        }
       } else {
         // User has not signed, show the popup
-        setShowPopup(true);
+        setShowPopup(!showPopup);
       }
     } else {
       toast.error("Please connect to the wallet first!");
@@ -41,7 +57,9 @@ function Home() {
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
-
+  const togglePlanPopup = () => {
+    setShowPlanPopup(!showPlanPopup);
+  };
   return (
     <div className="main-div-landing">
       <Navbar togglePopup={togglePopup} />
@@ -75,7 +93,14 @@ function Home() {
           </div>
         </div>
       </footer>
-      {showPopup && <Popup onClose={togglePopup} address={address} />}
+      {showPopup && (
+        <Popup
+          onClose={togglePopup}
+          address={address}
+          setShowPlanPopup={setShowPlanPopup}
+        />
+      )}
+      {showPlanPopup && <PlansPopup onClose={togglePlanPopup} />}
     </div>
   );
 }
