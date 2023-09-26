@@ -9,7 +9,7 @@ import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
 import Cookies from "js-cookie";
 import { PiCopySimpleLight } from "react-icons/pi";
 import { BiCheck } from "react-icons/bi";
-import { BounceLoader } from "react-spinners";
+import { BounceLoader, ClipLoader } from "react-spinners";
 import { getUserChatIds, getChatPromptsAndResponses } from "../APIs/apis";
 
 const ChatLog = ({ messages, isLoading, currentChatId }) => {
@@ -20,6 +20,7 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
   const { connected, address } = useWallet();
   const [activeId, setActiveId] = useState();
   const [chatData, setChatData] = useState([]);
+  const [isPageLoading, setIsPageLoading] = useState(true);
 
   // if (currentChatId === null) {
   //   return <EmptyComponent />;
@@ -47,23 +48,13 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
     }
   }, [address, connected, token]);
 
-  // const fetchUserChatIds = async () => {
-  //   try {
-  //     if (token) {
-  //       const response = await getUserChatIds(address, token);
-  //       setApiResponse(response.data.chatData);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching user's chat IDs:", error);
-  //   }
-  // };
-
   const fetchChatPromptsAndResponses = async () => {
     try {
       if (token) {
         const response = await getChatPromptsAndResponses(activeId, token);
         // console.log(response);
         setChatData(response.data.promptsAndResponses);
+        setIsPageLoading(false);
       }
     } catch (error) {
       console.error("Error fetching chat prompts and responses:", error);
@@ -219,7 +210,20 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
 
   return (
     <>
-      {chatData.length === 0 ? (
+      {isPageLoading ? (
+        <div className="chat-log-main">
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Link to="/">
+              <img className="chat-log-title" src={logo} alt="Chat Log Title" />
+            </Link>
+          </div>
+          <div className="chat-log">
+            <div className="chatLog-loader-main-class">
+              <ClipLoader color="#ffffff" />
+            </div>
+          </div>
+        </div>
+      ) : chatData.length === 0 ? (
         <EmptyComponent />
       ) : (
         <div className="chat-log-main">

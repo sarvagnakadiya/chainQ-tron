@@ -6,6 +6,7 @@ import { getUserChatIds, deleteChat, deleteUserData } from "../APIs/apis";
 import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
 import Cookies from "js-cookie";
 import PlansPopup from "./PlansPopup";
+import { ClipLoader } from "react-spinners";
 
 const MessageHistory = ({
   inputRef,
@@ -22,6 +23,7 @@ const MessageHistory = ({
   const [token, setToken] = useState(null);
   const { connected, address } = useWallet();
   const [showSPopup, setShowSPopup] = useState();
+  const [isPageLoading, setIsPageLoading] = useState(true);
 
   useEffect(() => {
     const signatureFromCookie = Cookies.get(address); // Use the address as the key
@@ -46,6 +48,7 @@ const MessageHistory = ({
         const response = await getUserChatIds(address, token);
         console.log(response.data.chatData);
         setApiResponse(response.data.chatData);
+        setIsPageLoading(false);
       }
     } catch (error) {
       console.error("Error fetching user's chat IDs:", error);
@@ -69,7 +72,7 @@ const MessageHistory = ({
     setLatestChatId();
   }, [apiResponse, connected]);
 
-  const handleSwitchSession = async (chatId) => {
+  const handleSwitchSession = async (chatId) => { 
     console.log("getting chatId", chatId);
     await setCurrentChatId(chatId);
     // setShowChatLog(true);
@@ -134,10 +137,6 @@ const MessageHistory = ({
     }
   };
 
-  const handleSubscribeBtn = () => {
-    setShowSPopup(true);
-  };
-
   // console.log(apiResponse);
   // console.log(chatTitleList)
   return (
@@ -161,7 +160,11 @@ const MessageHistory = ({
         <div className="chat-history-list">
           <div className="chat-history-msg-list">
             <div className="chatTitle-list">
-              {apiResponse.length === 0 ? (
+              {isPageLoading ? (
+                <div className="chatList-loader-main-class">
+                  <ClipLoader color="#ffffff" />
+                </div>
+              ) : apiResponse.length === 0 ? (
                 <div className="no-messages-center" style={{ color: "white" }}>
                   No chats yet.
                 </div>
@@ -174,7 +177,9 @@ const MessageHistory = ({
                       <div
                         key={chat.chatId}
                         className={`message chat-session
-                      ${chat.chatId === currentChatId ? "active-session" : ""}`}
+                        ${
+                          chat.chatId === currentChatId ? "active-session" : ""
+                        }`}
                         onClick={() => handleSwitchSession(chat.chatId)}
                         // data-chat-id={chat.chatId}
                       >

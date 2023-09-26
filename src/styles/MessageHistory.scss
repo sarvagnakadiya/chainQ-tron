@@ -221,7 +221,7 @@
     // overflow-x: hidden;
     // overflow-y: scroll;
     overflow: hidden;
-    border-bottom: 1px solid #2f2f2f;
+    border-bottom: 1px solid #333;
 }
 
 .chatTitle-list:hover {
@@ -264,4 +264,12 @@
 .upgrade-btn-sub-class {
     padding: 5%;
     cursor: pointer;
+}
+
+.chatList-loader-main-class{
+    margin: 10px auto;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
 }
