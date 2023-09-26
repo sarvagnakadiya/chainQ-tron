@@ -2,7 +2,7 @@ import Navbar from "./Navbar";
 import hero from "../assets/hero.png";
 import { useNavigate } from "react-router-dom";
 import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
-import Popup from "./Popup";
+import Popup from "./PlanPopup";
 import { toast } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
