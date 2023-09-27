@@ -48,7 +48,7 @@ const PlanPopup = ({ onClose }) => {
   };
 
   const getSign = async () => {
-    const signature = await tronWeb.trx.signMessageV2("hello");
+    const signature = await tronWeb.trx.signMessageV2("Login to ChainQ");
     if (signature) {
       setLoading(true); // Set loading to true when signing starts
       await userLoginAndAuthenticate(signature, address);

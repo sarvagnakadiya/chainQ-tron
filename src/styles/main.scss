@@ -28,13 +28,10 @@
   bottom: 2.5%;
   left: 33%;
   // box-shadow: 0px 0px 9px 0px rgb(0 0 0 / 64%);
-  box-shadow: 1px 1px rgba(0, 0, 0, 0.11),
-    0 2px 2px rgba(0, 0, 0, 0.11),
-    0 4px 4px rgba(0, 0, 0, 0.11),
-    0 6px 8px rgba(0, 0, 0, 0.11),
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11),
+    0 4px 4px rgba(0, 0, 0, 0.11), 0 6px 8px rgba(0, 0, 0, 0.11),
     0 8px 16px rgba(0, 0, 0, 0.11);
 }
-
 
 // .prompt-container {
 //   padding: 10px;
@@ -42,12 +39,10 @@
 //   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 // }
 
-
 .prompt-input {
   // height: 30px;
   width: -webkit-fill-available;
   padding: 10px 52px 10px 14px;
-  ;
   border: 0px solid;
   border-radius: 10px;
   font-size: 16px;
@@ -84,8 +79,8 @@
   background-color: #c2c2c2e5;
 }
 
-
-.prompt-input-field {}
+.prompt-input-field {
+}
 
 .timestamp {
   font-size: 12px;
@@ -102,7 +97,6 @@
   justify-content: space-between;
   // overflow-y: auto;
   overflow-x: hidden;
-
 }
 
 .chat-box {
@@ -116,8 +110,7 @@
   // overflow-y: auto;
   overflow-x: hidden;
   margin: 15px;
-  border-radius: 30px;
-
+  border-radius: 15px;
 }
 
 .chat-input {
@@ -134,10 +127,8 @@
   bottom: 2.5%;
   left: 33%;
   // box-shadow: 0px 0px 9px 0px rgb(0 0 0 / 64%);
-  box-shadow: 1px 1px rgba(0, 0, 0, 0.11),
-    0 2px 2px rgba(0, 0, 0, 0.11),
-    0 4px 4px rgba(0, 0, 0, 0.11),
-    0 6px 8px rgba(0, 0, 0, 0.11),
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11),
+    0 4px 4px rgba(0, 0, 0, 0.11), 0 6px 8px rgba(0, 0, 0, 0.11),
     0 8px 16px rgba(0, 0, 0, 0.11);
 }
 
@@ -176,9 +167,10 @@ input {
   align-items: center;
   background-color: #ebe1e1;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.25);
-  transition-duration: .15s;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+  transition-duration: 0.15s;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .send-btn[disabled] {
@@ -219,19 +211,18 @@ input {
   background-color: #343434;
   cursor: default;
 
-  transition-duration: .35s;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+  transition-duration: 0.35s;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .empty-que:hover .arrowBtn {
-
   transform: translateX(5px);
   transition-duration: 0.3s;
   transition-timing-function: ease;
   transition-delay: 0s;
 }
-
 
 .common-que-flex {
   display: flex;
@@ -461,7 +452,6 @@ input {
 // max-width: 70%;
 // }
 
-
 // ===================
 
 .loader {
@@ -481,7 +471,6 @@ input {
   background: #ffffff;
   border-radius: 50%;
   animation: loader-animation 1.2s cubic-bezier(0, 0.1, 1, 0) infinite; // animation: loader-animation 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
-
 }
 
 .loader div:nth-child(1) {
@@ -493,7 +482,6 @@ input {
 }
 
 @keyframes loader-animation {
-
   0%,
   100% {
     transform: scale(1);

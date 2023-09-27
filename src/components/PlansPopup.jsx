@@ -5,6 +5,7 @@ import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
 import Cookies from "js-cookie";
 import abi from "../contract/artifacts/chainq_abi.json";
 import { CHAINQ_SHASTA_TESTNET } from "../config";
+import EmptyComponent from "./EmptyComponent";
 
 function PlansPopup({ onClose }) {
   console.log("hello me aa gaya");
@@ -32,6 +33,7 @@ function PlansPopup({ onClose }) {
   }, [address]);
 
   const getPlanDetails = async () => {
+    setLoading(true);
     const connectedContract = await tronWeb.contract(
       abi,
       CHAINQ_SHASTA_TESTNET
@@ -44,6 +46,7 @@ function PlansPopup({ onClose }) {
       hasSubscription: txget.hasSubscription,
       expirationTimestamp: parseInt(txget.expirationTimestamp),
     });
+    setLoading(false);
   };
 
   const buyPlan = async () => {
@@ -61,9 +64,16 @@ function PlansPopup({ onClose }) {
           callValue: tronWeb.toSun(txget),
         });
         console.log(tx);
+        if (tx) {
+          let txget = await connectedContract
+            .getSubscriptionStatus(address)
+            .call();
+          console.log(txget.hasSubscription);
+          if (txget.hasSubscription) {
+            navigate("/chat-dashboard");
+          }
+        }
       }
-
-      navigate("/chat-dashboard");
     } else {
       // User has not signed, show the popup
       // setShowPopup(true);
@@ -82,7 +92,10 @@ function PlansPopup({ onClose }) {
           <div className="plans-popup-content">
             <div className="plans-header">
               <div className="plans-popup-title">Upgrade your plan</div>
-              <button className="plans-popup-close-button" onClick={onClose}>
+              <button
+                className="plans-popup-close-button"
+                onClick={() => onClose()}
+              >
                 &times;
               </button>
             </div>
@@ -91,15 +104,34 @@ function PlansPopup({ onClose }) {
             <div className="plans-section">
               <div className="plans-column">
                 <h3 className="plans-subtitle">Your Current Plan</h3>
-                <p>
-                  Has Subscription:{" "}
-                  {subscriptionData.hasSubscription ? "Yes" : "No"}
-                </p>
-                <p>
-                  Expiration Timestamp:{" "}
-                  {formatTimestamp(subscriptionData.expirationTimestamp)}
-                </p>
+                {loading ? (
+                  <>
+                    <div>loading...</div>
+                  </>
+                ) : (
+                  <>
+                    <span
+                      style={{
+                        color: subscriptionData.hasSubscription
+                          ? "green"
+                          : "red",
+                      }}
+                    >
+                      {subscriptionData.hasSubscription
+                        ? "Plan Active"
+                        : "No Active Plan"}
+                    </span>
+                  </>
+                )}
+
+                {subscriptionData.hasSubscription && (
+                  <p>
+                    Expires on:{" "}
+                    {formatTimestamp(subscriptionData.expirationTimestamp)}
+                  </p>
+                )}
               </div>
+
               <div className="plans-divider"></div>
               <div className="plans-column">
                 <h3 className="plans-subtitle">Upgrade Plan</h3>

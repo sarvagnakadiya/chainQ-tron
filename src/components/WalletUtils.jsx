@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 export const signMessageAndStore = async (tronWeb) => {
   try {
     // Sign the message
-    const signature = await tronWeb.trx.signMessageV2("hello");
+    const signature = await tronWeb.trx.signMessageV2("Login to ChainQ");
 
     if (signature) {
       // Store the signature in cookies

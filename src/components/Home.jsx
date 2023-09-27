@@ -29,7 +29,8 @@ function Home() {
 
   const getStarted = async () => {
     if (connected) {
-      if (isSigned) {
+      console.log(isSigned);
+      if (isSigned == true) {
         const connectedContract = await tronWeb.contract(
           abi,
           CHAINQ_SHASTA_TESTNET

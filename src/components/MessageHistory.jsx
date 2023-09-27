@@ -7,6 +7,8 @@ import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
 import Cookies from "js-cookie";
 import PlansPopup from "./PlansPopup";
 import { ClipLoader } from "react-spinners";
+import abi from "../contract/artifacts/chainq_abi.json";
+import { CHAINQ_SHASTA_TESTNET } from "../config";
 
 const MessageHistory = ({
   inputRef,
@@ -24,6 +26,10 @@ const MessageHistory = ({
   const { connected, address } = useWallet();
   const [showSPopup, setShowSPopup] = useState();
   const [isPageLoading, setIsPageLoading] = useState(true);
+  const [subscriptionData, setSubscriptionData] = useState({
+    hasSubscription: false,
+    expirationTimestamp: 0,
+  });
 
   useEffect(() => {
     const signatureFromCookie = Cookies.get(address); // Use the address as the key
@@ -31,6 +37,7 @@ const MessageHistory = ({
     if (signatureFromCookie) {
       setToken(signatureFromCookie);
       setIsSigned(true);
+      getPlanDetails();
 
       // Check if there is an authenticated user and get their chat IDs
       if (connected && isSigned) {
@@ -40,6 +47,21 @@ const MessageHistory = ({
       setIsSigned(false);
     }
   }, [address, connected, token]);
+
+  const getPlanDetails = async () => {
+    const connectedContract = await tronWeb.contract(
+      abi,
+      CHAINQ_SHASTA_TESTNET
+    );
+    console.log(connectedContract);
+    let txget = await connectedContract.getSubscriptionStatus(address).call();
+    console.log(txget.hasSubscription);
+    console.log(parseInt(txget.expirationTimestamp));
+    setSubscriptionData({
+      hasSubscription: txget.hasSubscription,
+      expirationTimestamp: parseInt(txget.expirationTimestamp),
+    });
+  };
 
   const fetchUserChatIds = async () => {
     try {
@@ -72,7 +94,12 @@ const MessageHistory = ({
     setLatestChatId();
   }, [apiResponse, connected]);
 
-  const handleSwitchSession = async (chatId) => { 
+  function formatTimestamp(timestamp) {
+    const date = new Date(timestamp * 1000); // Convert seconds to milliseconds
+    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+  }
+
+  const handleSwitchSession = async (chatId) => {
     console.log("getting chatId", chatId);
     await setCurrentChatId(chatId);
     // setShowChatLog(true);
@@ -121,6 +148,10 @@ const MessageHistory = ({
         }
       }
     }
+  };
+
+  const togglePlanPopup = () => {
+    setShowSPopup(!showSPopup);
   };
 
   const handleDeleteUserData = async () => {
@@ -208,12 +239,36 @@ const MessageHistory = ({
             className="upgrade-btn-class"
             onClick={() => setShowSPopup(true)}
           >
-            <div className="upgrade-btn-sub-class">Upgrade plan</div>
+            <p>
+              <span
+                style={{
+                  color: subscriptionData.hasSubscription ? "green" : "red",
+                }}
+              >
+                {subscriptionData.hasSubscription
+                  ? "Plan Active"
+                  : "No Active Plan"}
+              </span>
+            </p>
+
+            {subscriptionData.hasSubscription ? (
+              <p>
+                Expires on:{" "}
+                {formatTimestamp(subscriptionData.expirationTimestamp)}
+              </p>
+            ) : (
+              <>
+                <button className="upgrade-btn-sub-class">Purchase Plan</button>
+              </>
+            )}
           </div>
         </div>
       </div>
 
-      {showSPopup && <PlansPopup setShowSPopup={setShowSPopup} />}
+      {showSPopup && (
+        <PlansPopup setShowSPopup={setShowSPopup} onClose={togglePlanPopup} />
+      )}
+      {/* {showPlanPopup && <PlansPopup onClose={togglePlanPopup} />} */}
     </>
   );
 };
