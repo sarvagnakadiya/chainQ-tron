@@ -65,10 +65,11 @@ const Dashboard = () => {
           newMessage,
           token
         );
-        // setChatMessages([
-        //   ...chatMessages,
-        //   { text: newMessage, sender: "user" },
-        // ]);
+        setChatMessages([
+          ...chatMessages,
+          { text: newMessage, sender: "user" },
+        ]);
+
         console.log(resData);
         setIsLoading(false);
       } catch (error) {

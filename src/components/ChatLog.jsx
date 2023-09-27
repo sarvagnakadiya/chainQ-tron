@@ -14,7 +14,7 @@ import { getUserChatIds, getChatPromptsAndResponses } from "../APIs/apis";
 
 const ChatLog = ({ messages, isLoading, currentChatId }) => {
   const [copiedMessage, setCopiedMessage] = useState(null);
-  const responseContainerRef = useRef(null);
+  // const responseContainerRef = useRef(null);
   const [isSigned, setIsSigned] = useState(null);
   const [token, setToken] = useState(null);
   const { connected, address } = useWallet();
@@ -64,13 +64,24 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
   }, [activeId]);
 
   useEffect(() => {
-    if (responseContainerRef.current) {
-      responseContainerRef.current.scrollIntoView({
+    if (!isPageLoading && isLoading) {
+      // Scroll to the BounceLoader element when isLoading is true
+      const bounceLoaderDiv = document.querySelector(".loader-bounce-main");
+      if (bounceLoaderDiv) {
+        bounceLoaderDiv.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+        });
+      }
+    } else if (!isPageLoading) {
+      // Scroll to the bottom of the chat log div when new messages are loaded
+      const chatLogDiv = document.querySelector(".chat-log");
+      chatLogDiv.scrollTo({
+        top: chatLogDiv.scrollHeight,
         behavior: "smooth",
-        block: "end",
       });
     }
-  }, [chatData]);
+  }, [chatData, isPageLoading, isLoading]);
 
   const copyToClipboard = (text) => {
     const textArea = document.createElement("textarea");
@@ -234,7 +245,6 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
             {chatData.map((chatItem, index) =>
               renderChatMessage(chatItem, index)
             )}
-            <div ref={responseContainerRef}></div>
             {isLoading && (
               <div className="loader-bounce-main">
                 <BounceLoader className="bounce-loader" color="#191919" />
