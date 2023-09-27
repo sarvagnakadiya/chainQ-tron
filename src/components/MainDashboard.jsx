@@ -23,6 +23,8 @@ const Dashboard = () => {
   const [token, setToken] = useState(null);
   const [textareaHeight, setTextareaHeight] = useState(25);
 
+  const [chatMessages, setChatMessages] = useState([]);
+
   useEffect(() => {
     const signatureFromCookie = Cookies.get(address);
     console.log("signatureFromCookie", signatureFromCookie);
@@ -51,6 +53,7 @@ const Dashboard = () => {
     console.log("called sendMessage");
     console.log("message sent to chat:-", currentChatId);
     console.log(newMessage);
+
     setNewMessage("");
 
     if (currentChatId) {
@@ -62,6 +65,10 @@ const Dashboard = () => {
           newMessage,
           token
         );
+        // setChatMessages([
+        //   ...chatMessages,
+        //   { text: newMessage, sender: "user" },
+        // ]);
         console.log(resData);
         setIsLoading(false);
       } catch (error) {
@@ -163,6 +170,7 @@ const Dashboard = () => {
               isLoading={isLoading}
               setCurrentChatId={setCurrentChatId}
               currentChatId={currentChatId}
+              messages={chatMessages}
             />
           )}
 

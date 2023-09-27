@@ -15,6 +15,7 @@ const Popup = ({ onClose, setShowPlanPopup }) => {
   var resData;
 
   const userLoginAndAuthenticate = async (signature, address) => {
+    console.log(signature);
     try {
       resData = await addUser(address, signature);
       console.log(resData);

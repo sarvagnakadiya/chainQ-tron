@@ -19,7 +19,8 @@ export const addUser = (userAddress, signature) => {
 // Function to add a chat
 export const addChat = (userAddress, chatId, promptText, token) => {
   return axiosInstance.post(
-    "/chat",
+    "/dummyChat",
+    // "/chat",
     { userAddress, chatId, promptText },
     {
       headers: {

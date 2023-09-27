@@ -7,7 +7,7 @@ import abi from "../contract/artifacts/chainq_abi.json";
 import { CHAINQ_SHASTA_TESTNET } from "../config";
 import EmptyComponent from "./EmptyComponent";
 
-function PlansPopup({ onClose }) {
+function PlansPopup({ setShowSPopup }) {
   console.log("hello me aa gaya");
   const currentPlanPoints = ["Limited to 10 chats"];
   const upgradePlanPoints = ["Unlimited chats"];
@@ -94,7 +94,7 @@ function PlansPopup({ onClose }) {
               <div className="plans-popup-title">Upgrade your plan</div>
               <button
                 className="plans-popup-close-button"
-                onClick={() => onClose()}
+                onClick={() => setShowSPopup(false)}
               >
                 &times;
               </button>

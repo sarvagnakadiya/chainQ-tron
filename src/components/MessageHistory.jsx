@@ -30,6 +30,13 @@ const MessageHistory = ({
     hasSubscription: false,
     expirationTimestamp: 0,
   });
+  const [displayedChatSessions, setDisplayedChatSessions] = useState([]);
+
+  useEffect(() => {
+    if (!isPageLoading) {
+      setDisplayedChatSessions(apiResponse);
+    }
+  }, [isPageLoading, apiResponse]);
 
   useEffect(() => {
     const signatureFromCookie = Cookies.get(address); // Use the address as the key
@@ -41,6 +48,7 @@ const MessageHistory = ({
 
       // Check if there is an authenticated user and get their chat IDs
       if (connected && isSigned) {
+        // fetchUserChatIds();
         fetchUserChatIds(address, token);
       }
     } else {
@@ -74,6 +82,8 @@ const MessageHistory = ({
       }
     } catch (error) {
       console.error("Error fetching user's chat IDs:", error);
+      setIsPageLoading(false);
+      setCurrentChatId(null);
     }
   };
 
@@ -101,8 +111,9 @@ const MessageHistory = ({
 
   const handleSwitchSession = async (chatId) => {
     console.log("getting chatId", chatId);
-    await setCurrentChatId(chatId);
-    // setShowChatLog(true);
+    setCurrentChatId(chatId);
+    // setIsPageLoading(false);
+
     console.log(currentChatId);
     if (inputRef.current) {
       inputRef.current.focus();
@@ -122,29 +133,31 @@ const MessageHistory = ({
   };
 
   const handleDeleteChat = async (event, chatID) => {
-    const deleteChatConfirm = window.confirm("Click ok to continue.");
-    if (deleteChatConfirm) {
-      event.stopPropagation();
-      if (connected) {
-        try {
-          const response = await deleteChat(chatID, token);
-          console.log(response);
-          setApiResponse((prevChats) =>
-            prevChats.filter((chat) => chat.chatId !== chatID)
-          );
+    event.stopPropagation();
+    if (apiResponse.length === 1) {
+      handleDeleteUserData();
+    } else if (apiResponse.length >= 1) {
+      const deleteChatConfirm = window.confirm("Click ok to continue.");
+      if (deleteChatConfirm) {
+        if (connected) {
+          try {
+            const response = await deleteChat(chatID, token);
+            console.log(response);
+            setApiResponse((prevChats) =>
+              prevChats.filter((chat) => chat.chatId !== chatID)
+            );
 
-          // Set the previous chatId (second to latest) after deleting a chat
-          if (apiResponse.length >= 2) {
-            setCurrentChatId(apiResponse[1].chatId);
-          } else if (apiResponse.length === 1) {
-            // If there's only one chat left, set it as the currentChatId
-            setCurrentChatId(apiResponse[0].chatId);
-          } else {
-            // If there are no chats left, set currentChatId to null
-            setCurrentChatId(null);
+            // // Set the previous chatId (second to latest) after deleting a chat
+
+            if (apiResponse.length >= 1) {
+              setCurrentChatId(apiResponse[0].chatId);
+            } else {
+              // If there are no chats left, set currentChatId to null
+              setCurrentChatId(null);
+            }
+          } catch (error) {
+            console.error("Error deleting chat:", error);
           }
-        } catch (error) {
-          console.error("Error deleting chat:", error);
         }
       }
     }
@@ -160,6 +173,9 @@ const MessageHistory = ({
       if (confirmDelete) {
         try {
           const response = await deleteUserData(address, token);
+          setDisplayedChatSessions([]);
+          setCurrentChatId(null);
+
           console.log(response);
         } catch (error) {
           console.error("Error deleting user data:", error);
@@ -195,12 +211,12 @@ const MessageHistory = ({
                 <div className="chatList-loader-main-class">
                   <ClipLoader color="#ffffff" />
                 </div>
-              ) : apiResponse.length === 0 ? (
+              ) : displayedChatSessions.length === 0 ? (
                 <div className="no-messages-center" style={{ color: "white" }}>
                   No chats yet.
                 </div>
               ) : (
-                apiResponse
+                displayedChatSessions
                   .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) // Sort in descending order
                   .map((chat) => (
                     // .map((chat) => (
