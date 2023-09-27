@@ -74,6 +74,7 @@ const Dashboard = () => {
         setIsLoading(false);
       } catch (error) {
         console.error("Error authenticating user:", error);
+        setIsLoading(false);
       }
     } else if (currentChatId == null) {
       setIsLoading(true);

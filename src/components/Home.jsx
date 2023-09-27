@@ -101,7 +101,7 @@ function Home() {
           setShowPlanPopup={setShowPlanPopup}
         />
       )}
-      {showPlanPopup && <PlansPopup onClose={togglePlanPopup} />}
+      {showPlanPopup && <PlansPopup setShowSPopup={togglePlanPopup} />}
     </div>
   );
 }
