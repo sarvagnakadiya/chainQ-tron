@@ -7,7 +7,7 @@ import abi from "../contract/artifacts/chainq_abi.json";
 import { CHAINQ_SHASTA_TESTNET } from "../config";
 import EmptyComponent from "./EmptyComponent";
 
-function PlansPopup({ setShowSPopup }) {
+function PlansPopup({ setShowSPopup, onClose }) {
   console.log("hello me aa gaya");
   const currentPlanPoints = ["Limited to 10 chats"];
   const upgradePlanPoints = ["Unlimited chats"];
