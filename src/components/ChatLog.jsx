@@ -31,6 +31,7 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
       return <EmptyComponent />;
     } else {
       setActiveId(currentChatId);
+      console.log(currentChatId);
     }
   }, [currentChatId, activeId]);
 
@@ -39,10 +40,6 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
     if (signatureFromCookie) {
       setToken(signatureFromCookie);
       setIsSigned(true);
-
-      // if (connected) {
-      //   fetchUserChatIds(address, token);
-      // }
     } else {
       setIsSigned(false);
     }
@@ -54,6 +51,7 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
         const response = await getChatPromptsAndResponses(activeId, token);
         // console.log(response);
         setChatData(response.data.promptsAndResponses);
+        console.log(response.data.promptsAndResponses);
         setIsPageLoading(false);
       }
     } catch (error) {
@@ -236,12 +234,12 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
             {chatData.map((chatItem, index) =>
               renderChatMessage(chatItem, index)
             )}
+            <div ref={responseContainerRef}></div>
             {isLoading && (
               <div className="loader-bounce-main">
                 <BounceLoader className="bounce-loader" color="#191919" />
               </div>
             )}
-            <div ref={responseContainerRef}></div>
           </div>
         </div>
       )}

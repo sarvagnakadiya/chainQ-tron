@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import abi from "../contract/artifacts/chainq_abi.json";
 import { CHAINQ_SHASTA_TESTNET } from "../config";
 
-function PlansPopup({ onClose }) {
+function PlansPopup({ setShowSPopup }) {
   console.log("hello me aa gaya");
   const currentPlanPoints = ["Limited to 10 chats"];
   const upgradePlanPoints = ["Unlimited chats"];
@@ -82,7 +82,10 @@ function PlansPopup({ onClose }) {
           <div className="plans-popup-content">
             <div className="plans-header">
               <div className="plans-popup-title">Upgrade your plan</div>
-              <button className="plans-popup-close-button" onClick={onClose}>
+              <button
+                className="plans-popup-close-button"
+                onClick={() => setShowSPopup(false)}
+              >
                 &times;
               </button>
             </div>

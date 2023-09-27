@@ -25,6 +25,7 @@ export const addChat = (
 ) => {
   return axiosInstance.post(
     "/dummyChat",
+    // "/chat",
     { userAddress, chatId, promptText },
     {
       headers: {
