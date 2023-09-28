@@ -251,33 +251,37 @@ const MessageHistory = ({
               )}
             </div>
           </div>
-          <div
-            className="upgrade-btn-class"
-            onClick={() => setShowSPopup(true)}
-          >
-            <p>
-              <span
-                style={{
-                  color: subscriptionData.hasSubscription ? "green" : "red",
-                }}
-              >
-                {subscriptionData.hasSubscription
-                  ? "Plan Active"
-                  : "No Active Plan"}
-              </span>
-            </p>
 
-            {subscriptionData.hasSubscription ? (
+          {!isPageLoading && (
+            <div
+              className="upgrade-btn-class"
+              onClick={() => setShowSPopup(true)}
+            >
               <p>
-                Expires on:{" "}
-                {formatTimestamp(subscriptionData.expirationTimestamp)}
+                <span
+                  style={{
+                    color: subscriptionData.hasSubscription ? "green" : "red",
+                  }}
+                >
+                  {subscriptionData.hasSubscription
+                    ? "Plan Active"
+                    : "No Active Plan"}
+                </span>
               </p>
-            ) : (
-              <>
-                <button className="upgrade-btn-sub-class">Purchase Plan</button>
-              </>
-            )}
-          </div>
+              {subscriptionData.hasSubscription ? (
+                <p>
+                  Expires on:{" "}
+                  {formatTimestamp(subscriptionData.expirationTimestamp)}
+                </p>
+              ) : (
+                <>
+                  <button className="upgrade-btn-sub-class">
+                    Purchase Plan
+                  </button>
+                </>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

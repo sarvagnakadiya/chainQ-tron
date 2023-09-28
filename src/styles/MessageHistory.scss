@@ -33,21 +33,15 @@
 }
 
 .chat-history-list {
-  //   margin: 15px 15px;
   margin-top: 15px;
   margin-bottom: 15px;
   min-height: 89%;
-  //   max-height: 100%;
-  // min-height: 75%;
-  // max-height: 75%;
+  max-height: 90%;
   background-color: #4b4b4b;
   border-radius: 10px;
   justify-content: center;
   align-items: center;
-  // padding: 3%;
   padding: 3% 3% 3% 3%;
-  // overflow-x: hidden;
-  // overflow-y: scroll;
   position: relative;
   overflow: hidden;
   box-shadow: inset -5px -6px 20px 0px rgb(45 45 45 / 50%);
@@ -203,7 +197,7 @@
 }
 
 .chatTitle-list {
-  height: 73vh;
+  height: 72vh;
   // overflow-x: hidden;
   // overflow-y: scroll;
   overflow: hidden;
@@ -250,7 +244,7 @@
   margin: 0;
 }
 
-.upgrade-btn-class p + p {
+.upgrade-btn-class p+p {
   margin-top: 5px;
   border-top: 1px solid #ccc;
   padding-top: 5px;
@@ -265,9 +259,12 @@
   text-decoration: none;
   border: none;
   cursor: pointer;
-  border-radius: 0; /* Remove border radius */
-  width: 100%; /* Take up the entire width of the parent */
-  box-sizing: border-box; /* Include padding in width calculation */
+  border-radius: 0;
+  /* Remove border radius */
+  width: 100%;
+  /* Take up the entire width of the parent */
+  box-sizing: border-box;
+  /* Include padding in width calculation */
 }
 
 .upgrade-btn-sub-class:hover {

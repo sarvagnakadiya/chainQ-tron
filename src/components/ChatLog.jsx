@@ -22,9 +22,11 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
   const [chatData, setChatData] = useState([]);
   const [isPageLoading, setIsPageLoading] = useState(true);
 
-  // if (currentChatId === null) {
-  //   return <EmptyComponent />;
-  // }
+  useEffect(() => {
+    setChatData((prevChatMessages) => [...prevChatMessages, messages]);
+  }, [messages]);
+
+  console.log(chatData);
 
   useEffect(() => {
     if (currentChatId === null) {
@@ -62,6 +64,14 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
   useEffect(() => {
     fetchChatPromptsAndResponses();
   }, [activeId]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      // setTimeout(() => {
+      fetchChatPromptsAndResponses();
+      // }, 2000);
+    }
+  }, [isLoading]);
 
   useEffect(() => {
     if (!isPageLoading && isLoading) {
@@ -144,6 +154,9 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
 
   // Function to render a chat message
   const renderChatMessage = (chatItem, index) => {
+    console.log(index);
+    const isLastResponse =
+      index === chatData.length - 1 && chatItem.responseText;
     return (
       <>
         <div key={index} className="chat-msg-user">
@@ -167,6 +180,7 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
             </div>
           )}
         </div>
+
         <div key={index} className="chat-msg-response">
           {chatItem.responseText && (
             <>
@@ -181,34 +195,37 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
                     }}
                   />
                 </div>
-                <div className="chat-msg-response response-window-main">
-                  <div className="response-window-subClass">
-                    {renderJsonAsTable(chatItem.responseText)}
+
+                <>
+                  <div className="chat-msg-response response-window-main">
+                    <div className="response-window-subClass">
+                      {renderJsonAsTable(chatItem.responseText)}
+                    </div>
                   </div>
-                </div>
-                <div
-                  className="copy-main-div"
-                  style={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                    position: "relative",
-                    marginLeft: "2%",
-                    left: "0%",
-                  }}
-                >
                   <div
-                    className="copy-button"
-                    onClick={() => copyToClipboard(chatItem.responseText)}
+                    className="copy-main-div"
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      position: "relative",
+                      marginLeft: "2%",
+                      left: "0%",
+                    }}
                   >
-                    {copiedMessage === chatItem.responseText ? (
-                      <div>
-                        <BiCheck className="bicheck" />
-                      </div>
-                    ) : (
-                      <PiCopySimpleLight className="picopysimplelight" />
-                    )}
+                    <div
+                      className="copy-button"
+                      onClick={() => copyToClipboard(chatItem.responseText)}
+                    >
+                      {copiedMessage === chatItem.responseText ? (
+                        <div>
+                          <BiCheck className="bicheck" />
+                        </div>
+                      ) : (
+                        <PiCopySimpleLight className="picopysimplelight" />
+                      )}
+                    </div>
                   </div>
-                </div>
+                </>
               </div>
             </>
           )}
@@ -246,7 +263,12 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
               renderChatMessage(chatItem, index)
             )}
             {isLoading && (
-              <div className="loader-bounce-main">
+              <div
+                className={`loader-bounce-main chat-msg-response ${
+                  isLoading ? "" : "hide"
+                }
+                }`}
+              >
                 <BounceLoader className="bounce-loader" color="#191919" />
               </div>
             )}

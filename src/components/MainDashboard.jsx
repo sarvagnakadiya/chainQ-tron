@@ -50,6 +50,9 @@ const Dashboard = () => {
   };
 
   const sendMessage = async () => {
+    if (newMessage) {
+      setChatMessages({ promptText: newMessage });
+    }
     console.log("called sendMessage");
     console.log("message sent to chat:-", currentChatId);
     console.log(newMessage);
@@ -65,12 +68,11 @@ const Dashboard = () => {
           newMessage,
           token
         );
-        setChatMessages([
-          ...chatMessages,
-          { text: newMessage, sender: "user" },
-        ]);
 
         console.log(resData);
+        // Update chat messages with the response
+        // const responseText = resData.data.executedQuery;
+
         setIsLoading(false);
       } catch (error) {
         console.error("Error authenticating user:", error);
@@ -85,6 +87,7 @@ const Dashboard = () => {
           newMessage,
           token
         );
+
         console.log(resData);
         setIsLoading(false);
       } catch (error) {
@@ -131,7 +134,7 @@ const Dashboard = () => {
     if (textarea) {
       textarea.style.height = "auto"; // Reset height to auto to calculate content height
       const contentHeight = textarea.scrollHeight;
-      const maxHeight = 135;
+      const maxHeight = 140;
 
       if (contentHeight > maxHeight) {
         textarea.style.height = maxHeight + "px";
