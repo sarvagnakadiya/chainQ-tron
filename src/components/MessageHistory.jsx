@@ -18,6 +18,7 @@ const MessageHistory = ({
   setCurrentChatId,
   currentChatId,
   handleCreateNewChat,
+  messages,
 }) => {
   const [isSigned, setIsSigned] = useState(null);
   const [chatTitleList, setChatTitleList] = useState([]);
@@ -31,6 +32,13 @@ const MessageHistory = ({
     expirationTimestamp: 0,
   });
   const [displayedChatSessions, setDisplayedChatSessions] = useState([]);
+
+  console.log("messages", messages);
+
+  useEffect(() => {
+    if (currentChatId === null)
+      setApiResponse((prevChats) => [...prevChats, messages]);
+  }, [messages]);
 
   useEffect(() => {
     if (!isPageLoading) {
@@ -175,7 +183,7 @@ const MessageHistory = ({
           const response = await deleteUserData(address, token);
           setDisplayedChatSessions([]);
           setCurrentChatId(null);
-
+          window.location.reload();
           console.log(response);
         } catch (error) {
           console.error("Error deleting user data:", error);

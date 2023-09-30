@@ -14,7 +14,6 @@ const Dashboard = () => {
   const { connected, address } = useWallet();
   const [newMessage, setNewMessage] = useState("");
   const [sessions, setSessions] = useState([]);
-  // const [messages, setMessages] = useState({});
   const [showChatLog, setShowChatLog] = useState(false);
   const [currentChatId, setCurrentChatId] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -24,6 +23,15 @@ const Dashboard = () => {
   const [textareaHeight, setTextareaHeight] = useState(25);
 
   const [chatMessages, setChatMessages] = useState([]);
+  const [chatMessages2, setChatMessages2] = useState([]);
+  const [tempChatId, setTempChatId] = useState();
+  const [id, setId] = useState();
+
+  useEffect(() => {
+    if (tempChatId) {
+      setId(tempChatId);
+    }
+  }, [tempChatId]);
 
   useEffect(() => {
     const signatureFromCookie = Cookies.get(address);
@@ -36,10 +44,6 @@ const Dashboard = () => {
     }
   }, [address]);
 
-  useEffect(() => {
-    console.log("Current Chat ID:", currentChatId);
-  }, [currentChatId]);
-
   const handleCreateNewChat = () => {
     console.log("called handleCreateNewChat");
     setCurrentChatId(null);
@@ -51,51 +55,74 @@ const Dashboard = () => {
 
   const sendMessage = async () => {
     if (newMessage) {
-      setChatMessages({ promptText: newMessage });
-    }
-    console.log("called sendMessage");
-    console.log("message sent to chat:-", currentChatId);
-    console.log(newMessage);
+      if (currentChatId === null) {
+        setNewMessage("");
+        setIsLoading(true);
+        try {
+          const resData = await addChat(
+            address,
+            currentChatId,
+            newMessage,
+            token
+          );
 
-    setNewMessage("");
+          console.log(resData);
+          setIsLoading(false);
 
-    if (currentChatId) {
-      setIsLoading(true);
-      try {
-        const resData = await addChat(
-          address,
-          currentChatId,
-          newMessage,
-          token
-        );
+          // Set id with resData.data.chatId when currentChatId is null
+          setId(resData.data.chatId);
 
-        console.log(resData);
-        // Update chat messages with the response
-        // const responseText = resData.data.executedQuery;
+          // Create a copy of chatMessages and update the chatId property
+          const updatedChatMessages = {
+            ...chatMessages,
+            chatId: resData.data.chatId,
+            promptText: newMessage,
+            chatTitle: newMessage,
+            timestamp: new Date(),
+          };
+          console.log(updatedChatMessages);
 
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error authenticating user:", error);
-        setIsLoading(false);
+          // Set chatMessages using the updated object
+          setChatMessages(updatedChatMessages);
+        } catch (error) {
+          setIsLoading(false);
+          console.error("Error authenticating user:", error);
+        }
       }
-    } else if (currentChatId == null) {
-      setIsLoading(true);
-      try {
-        const resData = await addChat(
-          address,
-          currentChatId,
-          newMessage,
-          token
-        );
 
-        console.log(resData);
-        setIsLoading(false);
-      } catch (error) {
-        setIsLoading(false);
-        console.error("Error authenticating user:", error);
+      console.log("called sendMessage");
+      console.log("message sent to chat:-", currentChatId);
+      console.log(newMessage);
+
+      setNewMessage("");
+
+      if (currentChatId) {
+        if (newMessage) {
+          setChatMessages2({ promptText: newMessage });
+        }
+        setIsLoading(true);
+        try {
+          const resData = await addChat(
+            address,
+            currentChatId,
+            newMessage,
+            token
+          );
+
+          console.log(resData);
+          // Update chat messages with the response
+          // const responseText = resData.data.executedQuery;
+
+          setIsLoading(false);
+        } catch (error) {
+          console.error("Error authenticating user:", error);
+          setIsLoading(false);
+        }
+
+        setNewMessage("");
+        setTextareaHeight(25);
       }
     }
-    setTextareaHeight(25);
   };
 
   const isSendButtonDisabled = newMessage === "";
@@ -154,14 +181,11 @@ const Dashboard = () => {
         setCurrentChatId={setCurrentChatId}
         currentChatId={currentChatId}
         handleCreateNewChat={handleCreateNewChat}
+        messages={chatMessages}
       />
 
       <div className="chat-box-main">
         <div className="chat-box">
-          {/* {(currentChatId === null && !showChatLog) ||
-          (currentChatId !== null &&
-            hasZeroMessages(currentChatId) &&
-            !showChatLog) ? ( */}
           {currentChatId === null && !showChatLog ? (
             <EmptyComponent
               setNewMessage={setNewMessage}
@@ -175,26 +199,13 @@ const Dashboard = () => {
               isLoading={isLoading}
               setCurrentChatId={setCurrentChatId}
               currentChatId={currentChatId}
-              messages={chatMessages}
+              messages={chatMessages2}
             />
           )}
 
-          {/* <div className="chat-input"> */}
           <div className="prompt-input-area">
-            {/* <input
-                className="prompt-input-field"
-                type="text"
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                onKeyDown={handleKeyPress}
-                placeholder="Send your query"
-                disabled={isLoading}
-                ref={inputRef}
-              /> */}
-            {/* <div className="prompt-container"> */}
             <textarea
               className="prompt-input"
-              // style={{ minHeight: textareaHeight + "px" }}
               type="text"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
@@ -221,7 +232,6 @@ const Dashboard = () => {
               )}
             </div>
           </div>
-          {/* </div> */}
         </div>
       </div>
     </div>

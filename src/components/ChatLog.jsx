@@ -23,8 +23,18 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
   const [isPageLoading, setIsPageLoading] = useState(true);
 
   useEffect(() => {
-    setChatData((prevChatMessages) => [...prevChatMessages, messages]);
+    if (currentChatId) {
+      setChatData((prevChatMessages) => [...prevChatMessages, messages]);
+    }
   }, [messages]);
+
+  console.log(messages);
+
+  // useEffect(() => {
+  //   if (currentChatId === null) {
+  //     setChatData([messages]);
+  //   }
+  // }, [messages]);
 
   console.log(chatData);
 
@@ -155,8 +165,8 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
   // Function to render a chat message
   const renderChatMessage = (chatItem, index) => {
     console.log(index);
-    const isLastResponse =
-      index === chatData.length - 1 && chatItem.responseText;
+    // const isLastResponse =
+    //   index === chatData.length - 1 && chatItem.responseText;
     return (
       <>
         <div key={index} className="chat-msg-user">
