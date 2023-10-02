@@ -21,7 +21,6 @@ const Dashboard = () => {
   const [isSigned, setIsSigned] = useState(null);
   const [token, setToken] = useState(null);
   const [textareaHeight, setTextareaHeight] = useState(25);
-
   const [chatMessages, setChatMessages] = useState([]);
   const [chatMessages2, setChatMessages2] = useState([]);
   const [tempChatId, setTempChatId] = useState();
@@ -70,7 +69,7 @@ const Dashboard = () => {
           setIsLoading(false);
 
           // Set id with resData.data.chatId when currentChatId is null
-          setId(resData.data.chatId);
+          // setId(resData.data.chatId);
 
           // Create a copy of chatMessages and update the chatId property
           const updatedChatMessages = {
@@ -80,6 +79,7 @@ const Dashboard = () => {
             chatTitle: newMessage,
             timestamp: new Date(),
           };
+          
           console.log(updatedChatMessages);
 
           // Set chatMessages using the updated object

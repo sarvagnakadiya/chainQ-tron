@@ -103,18 +103,58 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
     }
   }, [chatData, isPageLoading, isLoading]);
 
-  const copyToClipboard = (text) => {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textArea);
-    setCopiedMessage(text);
+  // const copyToClipboard = (text) => {
+  //   const textArea = document.createElement("textarea");
+  //   textArea.value = text;
+  //   document.body.appendChild(textArea);
+  //   textArea.select();
+  //   document.execCommand("copy");
+  //   document.body.removeChild(textArea);
+  //   setCopiedMessage(text);
 
-    setTimeout(() => {
-      setCopiedMessage(null);
-    }, 3000);
+  //   setTimeout(() => {
+  //     setCopiedMessage(null);
+  //   }, 3000);
+  // };
+
+  const copyToClipboard = (text) => {
+    try {
+      const jsonData = JSON.parse(text);
+
+      const formatJson = (data, depth = 0) => {
+        let formattedText = "";
+
+        for (const key in data) {
+          const value = data[key];
+
+          if (typeof value === "object" && value !== null) {
+            formattedText += `${key}\n${formatJson(value, depth + 1)}`;
+          } else {
+            formattedText += `${"  ".repeat(depth)}${key}\n${"  ".repeat(
+              depth
+            )}${value}\n`;
+          }
+        }
+
+        return formattedText;
+      };
+
+      const formattedText = formatJson(jsonData);
+
+      const textArea = document.createElement("textarea");
+      textArea.value = formattedText;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textArea);
+      setCopiedMessage(text);
+
+      setTimeout(() => {
+        setCopiedMessage(null);
+      }, 3000);
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+    }
   };
 
   // Function to display JSON as a table
@@ -248,7 +288,13 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
     <>
       {isPageLoading ? (
         <div className="chat-log-main">
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              borderBottom: "0px solid #595959",
+            }}
+          >
             <Link to="/">
               <img className="chat-log-title" src={logo} alt="Chat Log Title" />
             </Link>

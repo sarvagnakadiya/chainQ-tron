@@ -9,6 +9,9 @@ import Cookies from "js-cookie";
 import PlansPopup from "./PlansPopup";
 import abi from "../contract/artifacts/chainq_abi.json";
 import { CHAINQ_SHASTA_TESTNET } from "../config";
+import "../styles/Home.scss";
+import HomeInstructions from "./HomeInstructions";
+import { FaAnglesRight } from "react-icons/fa6";
 
 function Home() {
   const navigate = useNavigate();
@@ -63,30 +66,43 @@ function Home() {
   };
   return (
     <div className="main-div-landing">
-      <Navbar togglePopup={togglePopup} />
+      <div className="home-landing-sub">
+        <Navbar togglePopup={togglePopup} />
 
-      <div className="landing-flex">
-        <div className="home-left-section">
-          <h1 className="home-title">
-            The AI-Powered Blockchain Data Querying System
-          </h1>
+        <div className="landing-flex">
+          <div className="home-left-section">
+            <h1 className="home-title">
+              The AI-Powered Blockchain Data Querying System
+            </h1>
 
-          <p className="home-desc">
-            Unleashing the Power of NLP and AI to Seamlessly Access and Analyze
-            Blockchain Data
-          </p>
-
-          <button className="try-btn" onClick={() => getStarted()}>
-            Try it first!
-          </button>
-        </div>
-        <div className="hero-right">
-          <div className="hero-right-inside">
-            <img className="hero-right-bg1" src={hero} alt="backgroundimage" />
+            <p className="home-desc">
+              Unleashing the Power of NLP and AI to Seamlessly Access and
+              Analyze Blockchain Data
+            </p>
+            <div className="try-and-instructions-btn">
+              <button className="try-btn" onClick={() => getStarted()}>
+                Try ChainQ!
+                <span className="rightA-icon-container">
+                  <FaAnglesRight className="rightA-icon" />
+                </span>
+              </button>
+              {/* <button className="try-btn" onClick="">
+                Go to instructions
+              </button> */}
+            </div>
+          </div>
+          <div className="hero-right">
+            <div className="hero-right-inside">
+              <img
+                className="hero-right-bg1 animated-bg"
+                src={hero}
+                alt="backgroundimage"
+              />
+            </div>
           </div>
         </div>
       </div>
-
+      <HomeInstructions />
       <footer>
         <div className="footer-flex">
           <div style={{ color: "white", fontSize: "15px" }}>

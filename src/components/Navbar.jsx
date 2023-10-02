@@ -12,19 +12,16 @@ function Navbar() {
           <span
             className="logo"
             style={{
-              width: "30%",
+              width: "35%",
               display: "flex",
-              textAlign: "center",
+              // textAlign: "center",
               alignItems: "center",
               justifyContent: "center",
+              marginLeft: "5%",
             }}
           >
             <Link to="/">
-              <img
-                src={logo}
-                alt="logo"
-                style={{ width: "35%", marginLeft: "5%" }}
-              />
+              <img src={logo} alt="logo" style={{ width: "35%" }} />
             </Link>
           </span>
           <div

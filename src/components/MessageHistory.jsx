@@ -120,7 +120,6 @@ const MessageHistory = ({
   const handleSwitchSession = async (chatId) => {
     console.log("getting chatId", chatId);
     setCurrentChatId(chatId);
-    // setIsPageLoading(false);
 
     console.log(currentChatId);
     if (inputRef.current) {
@@ -129,15 +128,6 @@ const MessageHistory = ({
       // Handle the case where the session is not available (optional)
       console.log(`Session with ID ${chatId} does not exist.`);
     }
-
-    // const chatSessions = document.querySelectorAll(".chat-session");
-    // chatSessions.forEach((session) => {
-    //   if (session.getAttribute("data-chat-id") === chatId) {
-    //     session.classList.add("active-session");
-    //   } else {
-    //     session.classList.remove("active-session");
-    //   }
-    // });
   };
 
   const handleDeleteChat = async (event, chatID) => {
@@ -245,14 +235,17 @@ const MessageHistory = ({
                             ? `${chat.chatTitle.substring(0, 20)}...`
                             : chat.chatTitle}
                         </div>
-                        <div
-                          className="delete-session"
-                          onClick={(event) =>
-                            handleDeleteChat(event, chat.chatId)
-                          }
-                        >
-                          <RiDeleteBin6Line />
-                        </div>
+
+                        {chat.chatId === currentChatId && (
+                          <div
+                            className="delete-session"
+                            onClick={(event) =>
+                              handleDeleteChat(event, chat.chatId)
+                            }
+                          >
+                            <RiDeleteBin6Line />
+                          </div>
+                        )}
                       </div>
                     </>
                   ))
