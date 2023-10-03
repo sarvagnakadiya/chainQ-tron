@@ -7,12 +7,13 @@
 }
 
 .home-landing-sub {
-    height: 100vh;
+    // height: 100vh;
+    margin-bottom: 6%;
 }
 
 .home-left-section {
     width: 60%;
-    margin-left: 100px;
+    margin-left: 7%;
     display: flex;
     text-align: initial;
     flex-direction: column;
@@ -69,7 +70,6 @@
     display: flex;
     width: 100%;
     padding: 20px 0px;
-
     bottom: 0;
     // background-image: url("../assets/footer.png");
     background-repeat: no-repeat;
@@ -79,19 +79,28 @@
     justify-content: space-around;
 }
 
+.try-and-instructions-btn {
+    width: 100%;
+    margin-top: 8%;
+    display: flex;
+    // text-align: center;
+    align-items: center;
+    // justify-content: center;
+}
+
 .try-btn {
     background-color: #2e4062;
     // background-color: #246aee;
     border: 1px solid #246aee;
     color: white;
-    width: 100%;
-    padding: 20px 20px 17px 20px;
+
+    width: 27%;
+    padding: 3% 3% 2% 3%;
     font-size: 1.3rem;
     letter-spacing: 2px;
-    margin-top: 10%;
     border-radius: 10px;
     display: flex;
-    position: relative;
+    // position: relative;
 }
 
 .try-btn:hover {
@@ -107,6 +116,16 @@
 
 .try-btn:hover .rightA-icon-container {
     transform: translateX(5px);
+}
+
+.instructions-text-main-class {
+    margin-left: 2%;
+}
+
+.instructions-text-class {
+    color: #246aee;
+
+    cursor: pointer;
 }
 
 // ..............navbar css...............

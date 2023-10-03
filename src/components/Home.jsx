@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
 import Popup from "./Popup";
 import { toast } from "react-hot-toast";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Cookies from "js-cookie";
 import PlansPopup from "./PlansPopup";
 import abi from "../contract/artifacts/chainq_abi.json";
@@ -58,6 +58,20 @@ function Home() {
     }
   };
 
+  // Create a ref for the HomeInstructions component
+  const instructionsRef = useRef(null);
+
+  // Function to scroll to the HomeInstructions component
+  const scrollToInstructions = () => {
+    console.log("clicked");
+    if (instructionsRef.current) {
+      instructionsRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
@@ -86,9 +100,14 @@ function Home() {
                   <FaAnglesRight className="rightA-icon" />
                 </span>
               </button>
-              {/* <button className="try-btn" onClick="">
-                Go to instructions
-              </button> */}
+              <div className="instructions-text-main-class">
+                <span
+                  className="instructions-text-class"
+                  onClick={() => scrollToInstructions()}
+                >
+                  Go to instructions
+                </span>
+              </div>
             </div>
           </div>
           <div className="hero-right">
@@ -102,7 +121,9 @@ function Home() {
           </div>
         </div>
       </div>
-      <HomeInstructions />
+      <div className="home-instructions" ref={instructionsRef}>
+        <HomeInstructions id="instructions" />
+      </div>
       <footer>
         <div className="footer-flex">
           <div style={{ color: "white", fontSize: "15px" }}>

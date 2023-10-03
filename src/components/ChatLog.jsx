@@ -204,7 +204,7 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
 
   // Function to render a chat message
   const renderChatMessage = (chatItem, index) => {
-    console.log(index);
+    // console.log(index);
     // const isLastResponse =
     //   index === chatData.length - 1 && chatItem.responseText;
     return (
@@ -230,6 +230,74 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
             </div>
           )}
         </div>
+
+        {/* <div key={index} className="chat-msg-response">
+          {chatItem.responseText && chatItem.responseText.length > 0 && (
+            <>
+              <div className="chat-msg-center">
+                <div className="chat-avatar-response">
+                  <img
+                    src={icon}
+                    alt="Bot Avatar"
+                    style={{
+                      width: "35px",
+                      height: "45px",
+                    }}
+                  />
+                </div>
+                <>
+                  <div className="chat-msg-response response-window-main">
+                    <div className="response-window-subClass">
+                      {renderJsonAsTable(chatItem.responseText)}
+                    </div>
+                  </div>
+                  <div
+                    className="copy-main-div"
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      position: "relative",
+                      marginLeft: "2%",
+                      left: "0%",
+                    }}
+                  >
+                    <div
+                      className="copy-button"
+                      onClick={() => copyToClipboard(chatItem.responseText)}
+                    >
+                      {copiedMessage === chatItem.responseText ? (
+                        <div>
+                          <BiCheck className="bicheck" />
+                        </div>
+                      ) : (
+                        <PiCopySimpleLight className="picopysimplelight" />
+                      )}
+                    </div>
+                  </div>
+                </>
+              </div>
+            </>
+          )}
+          {chatItem.responseText && chatItem.responseText.length === 0 && (
+            <div className="chat-msg-center">
+              <div className="chat-avatar-response">
+                <img
+                  src={icon}
+                  alt="Bot Avatar"
+                  style={{
+                    width: "35px",
+                    height: "45px",
+                  }}
+                />
+              </div>
+              <div className="chat-msg-response response-window-main">
+                <div className="response-window-subClass">
+                  I am just an AI Bot, I am in a Beta stage.
+                </div>
+              </div>
+            </div>
+          )}
+        </div> */}
 
         <div key={index} className="chat-msg-response">
           {chatItem.responseText && (
