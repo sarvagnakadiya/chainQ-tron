@@ -317,9 +317,21 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
                 <>
                   <div className="chat-msg-response response-window-main">
                     <div className="response-window-subClass">
-                      {renderJsonAsTable(chatItem.responseText)}
+                      {chatItem.responseText &&
+                      chatItem.responseText.trim() !== "[]" ? (
+                        renderJsonAsTable(chatItem.responseText)
+                      ) : (
+                        <span>
+                          I'm just an AI model still in beta stage, so I've got
+                          some limitations and not a ton of data to work with.
+                          Sorry about that! 🙇‍♂️ But I'm here to help however I
+                          can, so feel free to ask me anything about tron
+                          blockchain. ♦️😊
+                        </span>
+                      )}
                     </div>
                   </div>
+
                   <div
                     className="copy-main-div"
                     style={{
