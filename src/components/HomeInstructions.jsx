@@ -33,9 +33,7 @@ function HomeInstructions() {
           <div className="step" key={step.number}>
             {/* <div className="step-number">{step.number}</div> */}
             <div className="step-content">
-              <h3
-                style={{ color: "#007bff" }}
-              >{`Step ${step.number}: ${step.title}`}</h3>
+              <h3>{`Step ${step.number}: ${step.title}`}</h3>
               <p>{step.description}</p>
             </div>
           </div>
