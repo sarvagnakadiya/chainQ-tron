@@ -82,14 +82,16 @@
     display: flex;
     margin-bottom: 20px;
     align-items: flex-start;
+
 }
 
 .step-number {
     width: 40px;
     height: 40px;
-    background-color: #007bff;
+    background-color: #92a1b0;
     /* Blue step number background */
-    color: white;
+    // color: white;
+
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -103,12 +105,13 @@
     flex: 1;
 }
 
-h3 {
+.step-content h3 {
     font-size: 20px;
     margin-bottom: 10px;
+    color: #92a1b0;
 }
 
-p {
+.step-content p {
     font-size: 16px;
     line-height: 1.5;
 }
