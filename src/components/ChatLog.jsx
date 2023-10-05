@@ -11,8 +11,16 @@ import { PiCopySimpleLight } from "react-icons/pi";
 import { BiCheck } from "react-icons/bi";
 import { BounceLoader, ClipLoader } from "react-spinners";
 import { getUserChatIds, getChatPromptsAndResponses } from "../APIs/apis";
+import { TbLayoutSidebarLeftCollapseFilled } from "react-icons/tb";
+import { TbLayoutSidebarLeftExpandFilled } from "react-icons/tb";
 
-const ChatLog = ({ messages, isLoading, currentChatId }) => {
+const ChatLog = ({
+  messages,
+  isLoading,
+  currentChatId,
+  setShowMessageHistory,
+  showMessageHistory,
+}) => {
   const [copiedMessage, setCopiedMessage] = useState(null);
   // const responseContainerRef = useRef(null);
   const [isSigned, setIsSigned] = useState(null);
@@ -366,51 +374,79 @@ const ChatLog = ({ messages, isLoading, currentChatId }) => {
 
   return (
     <>
-      {isPageLoading ? (
-        <div className="chat-log-main">
+      <div>
+        <div className="open-close-tab-icons">
           <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              borderBottom: "0px solid #595959",
-            }}
+            className={showMessageHistory ? "close-tab-icon" : "open-tab-icon"}
+            onClick={() => setShowMessageHistory(!showMessageHistory)}
           >
-            <Link to="/">
-              <img className="chat-log-title" src={logo} alt="Chat Log Title" />
-            </Link>
+            {showMessageHistory ? (
+              <TbLayoutSidebarLeftCollapseFilled
+                className="SidebarLeftCollapseFilled"
+                style={{ fontSize: "2rem" }}
+              />
+            ) : (
+              <TbLayoutSidebarLeftExpandFilled
+                className="SidebarLeftCollapseFilled"
+                style={{ fontSize: "2rem" }}
+              />
+            )}
           </div>
-          <div className="chat-log">
-            <div className="chatLog-loader-main-class">
-              <ClipLoader color="#ffffff" />
+        </div>
+        {isPageLoading ? (
+          <div className="chat-log-main">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                borderBottom: "0px solid #595959",
+              }}
+            >
+              <Link to="/">
+                <img
+                  className="chat-log-title"
+                  src={logo}
+                  alt="Chat Log Title"
+                />
+              </Link>
+            </div>
+            <div className="chat-log">
+              <div className="chatLog-loader-main-class">
+                <ClipLoader color="#ffffff" />
+              </div>
             </div>
           </div>
-        </div>
-      ) : chatData.length === 0 ? (
-        <EmptyComponent />
-      ) : (
-        <div className="chat-log-main">
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <Link to="/">
-              <img className="chat-log-title" src={logo} alt="Chat Log Title" />
-            </Link>
+        ) : chatData.length === 0 ? (
+          <EmptyComponent />
+        ) : (
+          <div className="chat-log-main">
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <Link to="/">
+                <img
+                  className="chat-log-title"
+                  src={logo}
+                  alt="Chat Log Title"
+                />
+              </Link>
+            </div>
+            <div className="chat-log">
+              {chatData.map((chatItem, index) =>
+                renderChatMessage(chatItem, index)
+              )}
+              {isLoading && (
+                <div
+                  className={`loader-bounce-main chat-msg-response ${
+                    isLoading ? "" : "hide"
+                  }
+            }`}
+                >
+                  <BounceLoader className="bounce-loader" color="#191919" />
+                </div>
+              )}
+            </div>
           </div>
-          <div className="chat-log">
-            {chatData.map((chatItem, index) =>
-              renderChatMessage(chatItem, index)
-            )}
-            {isLoading && (
-              <div
-                className={`loader-bounce-main chat-msg-response ${
-                  isLoading ? "" : "hide"
-                }
-                }`}
-              >
-                <BounceLoader className="bounce-loader" color="#191919" />
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 };

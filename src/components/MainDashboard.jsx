@@ -25,6 +25,7 @@ const Dashboard = () => {
   const [chatMessages2, setChatMessages2] = useState([]);
   const [tempChatId, setTempChatId] = useState();
   const [id, setId] = useState();
+  const [showMessageHistory, setShowMessageHistory] = useState(true);
 
   useEffect(() => {
     if (tempChatId) {
@@ -79,7 +80,7 @@ const Dashboard = () => {
             chatTitle: newMessage,
             timestamp: new Date(),
           };
-          
+
           console.log(updatedChatMessages);
 
           // Set chatMessages using the updated object
@@ -182,6 +183,7 @@ const Dashboard = () => {
         currentChatId={currentChatId}
         handleCreateNewChat={handleCreateNewChat}
         messages={chatMessages}
+        showMessageHistory={showMessageHistory}
       />
 
       <div className="chat-box-main">
@@ -200,36 +202,40 @@ const Dashboard = () => {
               setCurrentChatId={setCurrentChatId}
               currentChatId={currentChatId}
               messages={chatMessages2}
+              showMessageHistory={showMessageHistory}
+              setShowMessageHistory={setShowMessageHistory}
             />
           )}
 
           <div className="prompt-input-area">
-            <textarea
-              className="prompt-input"
-              type="text"
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              onKeyDown={handleKeyPress}
-              placeholder="Send your query"
-              disabled={isLoading}
-              ref={inputRef}
-            ></textarea>
-            <div>
-              {isLoading ? (
-                <div className="loader">
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                </div>
-              ) : (
-                <button
-                  onClick={sendMessage}
-                  disabled={isSendButtonDisabled}
-                  className="send-btn"
-                >
-                  <TbSend />
-                </button>
-              )}
+            <div className="prompt-elements">
+              <textarea
+                className="prompt-input"
+                type="text"
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                onKeyDown={handleKeyPress}
+                placeholder="Send your query"
+                disabled={isLoading}
+                ref={inputRef}
+              ></textarea>
+              <div>
+                {isLoading ? (
+                  <div className="loader">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={sendMessage}
+                    disabled={isSendButtonDisabled}
+                    className="send-btn"
+                  >
+                    <TbSend />
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>

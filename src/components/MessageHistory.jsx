@@ -19,6 +19,7 @@ const MessageHistory = ({
   currentChatId,
   handleCreateNewChat,
   messages,
+  showMessageHistory,
 }) => {
   const [isSigned, setIsSigned] = useState(null);
   const [chatTitleList, setChatTitleList] = useState([]);
@@ -186,7 +187,8 @@ const MessageHistory = ({
   // console.log(chatTitleList)
   return (
     <>
-      <div className="message-history">
+      {/* {showMessageHistory && ( */}
+      <div className={`message-history ${showMessageHistory ? "active" : ""}`}>
         <div className="action-btns-mh">
           <div
             className="side-menu-newChat-button"
@@ -194,7 +196,7 @@ const MessageHistory = ({
               handleCreateNewChat();
             }}
           >
-            + New Chat
+            <span className="newChatText">+ New Chat</span>
           </div>
           <div className="side-menu-button" onClick={handleDeleteUserData}>
             <span>
@@ -222,9 +224,11 @@ const MessageHistory = ({
                       <div
                         key={chat.chatId}
                         className={`message chat-session
-                        ${
-                          chat.chatId === currentChatId ? "active-session" : ""
-                        }`}
+                          ${
+                            chat.chatId === currentChatId
+                              ? "active-session"
+                              : ""
+                          }`}
                         onClick={() => handleSwitchSession(chat.chatId)}
                         // data-chat-id={chat.chatId}
                       >
@@ -285,11 +289,11 @@ const MessageHistory = ({
           )}
         </div>
       </div>
+      {/* )} */}
 
       {showSPopup && (
         <PlansPopup setShowSPopup={setShowSPopup} onClose={togglePlanPopup} />
       )}
-      {/* {showPlanPopup && <PlansPopup onClose={togglePlanPopup} />} */}
     </>
   );
 };

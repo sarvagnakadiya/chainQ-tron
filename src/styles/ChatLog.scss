@@ -34,8 +34,9 @@
 .chat-msg-center {
   padding: 13px 30px;
   display: flex;
-  margin: 0px 2%;
-  width: 90%;
+  // margin: 0px 2%;
+  width: 80%;
+  margin: 0 auto;
 
 }
 
@@ -54,6 +55,7 @@
   overflow: hidden;
   overflow-x: scroll;
   border-radius: 8px;
+  padding-left: 1%;
 }
 
 .prompt-window-main::-webkit-scrollbar-track {
@@ -205,4 +207,16 @@
   align-items: center;
   text-align: center;
   justify-content: center;
+}
+
+
+.SidebarLeftCollapseFilled {
+  color: #878585;
+  cursor: pointer;
+  position: absolute;
+  margin-left: 1%;
+}
+
+.SidebarLeftCollapseFilled:hover {
+  color: #b7b7b7;
 }

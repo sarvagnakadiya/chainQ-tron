@@ -7,9 +7,6 @@
 .prompt-input-area {
   display: flex;
   width: 87%;
-  // left: 0%;
-  // right: 2%;
-  // top: 2%;
 
   flex-direction: column;
   position: relative;
@@ -33,11 +30,34 @@
     0 8px 16px rgba(0, 0, 0, 0.11);
 }
 
+
+// .prompt-input-area {
+//   display: flex;
+//   width: 87%;
+//   flex-direction: column;
+//   position: relative;
+//   max-height: 180px;
+//   display: flex;
+//   align-items: center;
+//   margin: 15px auto;
+//   width: 50%;
+//   border-radius: 10px;
+//   background-color: #292d30;
+//   bottom: 0.5%;
+//   overflow: hidden;
+//   box-shadow: 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11), 0 4px 4px rgba(0, 0, 0, 0.11), 0 6px 8px rgba(0, 0, 0, 0.11), 0 8px 16px rgba(0, 0, 0, 0.11);
+// }
+
 // .prompt-container {
 //   padding: 10px;
 //   border-radius: 8px;
 //   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 // }
+
+.prompt-elements {
+  width: -webkit-fill-available;
+
+}
 
 .prompt-input {
   // height: 30px;
@@ -79,8 +99,7 @@
   background-color: #c2c2c2e5;
 }
 
-.prompt-input-field {
-}
+.prompt-input-field {}
 
 .timestamp {
   font-size: 12px;
@@ -109,7 +128,7 @@
   justify-content: space-between;
   // overflow-y: auto;
   overflow-x: hidden;
-  margin: 15px;
+  margin: 15px 15px 15px 0px;
   border-radius: 15px;
 }
 
@@ -301,6 +320,7 @@ input {
 }
 
 @keyframes loader-animation {
+
   0%,
   100% {
     transform: scale(1);

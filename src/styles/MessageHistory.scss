@@ -21,24 +21,52 @@
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.message-history-main-class {
+  padding-left: 15px;
+}
+
 .message-history {
-  width: 229px !important;
-  min-width: 229px !important;
-  padding: 15px 0px 15px 15px;
+  // width: 229px !important;
+  // min-width: 229px !important;
+  padding: 15px 0px 3px 15px;
+  // padding: 15px 0px 15px 15px;
   --tw-bg-opacity: 1;
   background-color: #2f2f2f;
+  position: relative;
+  width: 0;
+  // max-height: 0;
+  overflow: hidden;
+  transition: width 0.4s ease;
 }
+
+.message-history.active {
+  width: 229px !important;
+  min-width: 229px !important;
+  padding: 15px 15px 3px 15px;
+  transition: width 0.4s ease;
+}
+
+
+
+.newChatText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 
 .chat-history-list {
   margin-top: 15px;
   margin-bottom: 15px;
-  min-height: 89%;
+  min-height: 85vh;
+  // min-height: 89%;
   max-height: 90%;
   background-color: #4b4b4b;
   border-radius: 10px;
   justify-content: center;
   align-items: center;
-  padding: 3% 3% 3% 3%;
+  padding: 6px 6px 6px 6px;
+  // padding: 3% 3% 3% 3%;
   position: relative;
   overflow: hidden;
   box-shadow: inset -5px -6px 20px 0px rgb(45 45 45 / 50%);
@@ -47,7 +75,9 @@
 .action-btns-mh {
   display: flex;
   margin: 0px 2px;
-  max-height: 10%;
+  max-height: 60px;
+  position: relative;
+  overflow: hidden;
 }
 
 .side-menu-button {
@@ -201,8 +231,10 @@
   border-radius: 0.4rem;
   transition: border-color 0.3s ease;
   color: white;
-  width: 100%;
+  width: 13.6rem;
+  // width: 100%;
   box-sizing: border-box;
+  position: relative;
 }
 
 .upgrade-btn-class:hover {
@@ -211,12 +243,17 @@
 
 .upgrade-btn-class p {
   margin: 0;
+
+  // white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
 }
 
 .upgrade-btn-class p+p {
   margin-top: 5px;
   border-top: 1px solid #ccc;
   padding-top: 5px;
+
 }
 
 .upgrade-btn-sub-class {
