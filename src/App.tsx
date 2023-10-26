@@ -2,6 +2,7 @@ import "./App.css";
 import MainDashboard from "./components/MainDashboard.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
+// import { Widget } from "explorex";
 
 import { useMemo } from "react";
 import type {
@@ -118,6 +119,9 @@ export function App() {
     console.log("onAdapterChanged", adapter);
   }
 
+  const { connected, address } = useWallet();
+  console.log(address);
+
   // function isUserAuthenticated() {
   //   const isConnected = connected;
   //   const signatureFromCookie = Cookies.get(address);
@@ -142,6 +146,10 @@ export function App() {
           </Routes>
         </BrowserRouter>
       </WalletModalProvider>
+      {/* <Widget
+        address="Connected wallet address"
+        chain="Mainnet or Shasta or Nile"
+      /> */}
     </WalletProvider>
   );
 }

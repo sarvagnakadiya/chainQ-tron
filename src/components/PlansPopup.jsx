@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import abi from "../contract/artifacts/chainq_abi.json";
 import { CHAINQ_SHASTA_TESTNET } from "../config";
 import EmptyComponent from "./EmptyComponent";
+import { GetHash } from "explorex";
 
 function PlansPopup({ setShowSPopup, onClose }) {
   console.log("hello me aa gaya");
@@ -63,6 +64,11 @@ function PlansPopup({ setShowSPopup, onClose }) {
         let tx = await connectedContract.purchaseSubscription().send({
           callValue: tronWeb.toSun(txget),
         });
+        GetHash(
+          tx,
+          "Shasta" // Mainnet, Shasta, Nile
+        );
+
         console.log(tx);
         if (tx) {
           let txget = await connectedContract

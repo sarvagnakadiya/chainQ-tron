@@ -12,6 +12,7 @@ import { CHAINQ_SHASTA_TESTNET } from "../config";
 import "../styles/Home.scss";
 import HomeInstructions from "./HomeInstructions";
 import { FaAnglesRight } from "react-icons/fa6";
+import { Widget } from "explorex";
 
 function Home() {
   const navigate = useNavigate();
@@ -19,6 +20,9 @@ function Home() {
   const [showPopup, setShowPopup] = useState(false);
   const [showPlanPopup, setShowPlanPopup] = useState(false);
   const [isSigned, setIsSigned] = useState(null);
+
+  console.log(connected);
+  console.log(address);
 
   useEffect(() => {
     // Check if the user has signed a message using cookies
@@ -124,6 +128,11 @@ function Home() {
       <div className="home-instructions" ref={instructionsRef}>
         <HomeInstructions id="instructions" />
       </div>
+      {connected ? (
+        <>
+          <Widget address={address} chain="Shasta" />
+        </>
+      ) : null}
       <footer>
         <div className="footer-flex">
           <div style={{ color: "white", fontSize: "15px" }}>

@@ -9,6 +9,7 @@ import { TbSend } from "react-icons/tb";
 import { getUserChatIds, addChat } from "../APIs/apis";
 import { useWallet } from "@tronweb3/tronwallet-adapter-react-hooks";
 import Cookies from "js-cookie";
+import { Widget } from "explorex";
 
 const Dashboard = () => {
   const { connected, address } = useWallet();
@@ -240,6 +241,11 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      {connected ? (
+        <>
+          <Widget address={address} chain="Shasta" />
+        </>
+      ) : null}
     </div>
   );
 };
